@@ -36,8 +36,11 @@ package registries, model hubs, cloud APIs).
 
 | Service | Scope | Source | Notes |
 |---|---|---|---|
-| git 提交身份 | 仅本仓库（`.git/config`） | 仓库所有者指定：Jingwu Luo / 学校邮箱 | 全局未配置；仓库公开，邮箱出现在公开提交记录中 |
-| GitHub 远程 `luo-jingw/Research` | 仅本仓库的 `origin` | 文件 `/home/jingwu/workspace/github_token`（仓库外） | 每次 push 通过一次性 `-c credential.helper` 读取，不写入 `.git/config` 或远程 URL |
+| git 提交身份 | 本仓库 `.git/config` | 仓库所有者指定 | 全局未配置 |
+| GitHub `luo-jingw/Research` | 本仓库 `origin` | 仓库外的 token 文件 | 不写入任何配置 |
+
+- git 提交身份：Jingwu Luo / 学校邮箱，只写在仓库级配置；仓库公开，邮箱出现在公开提交记录中。
+- GitHub 推送：token 文件为 `/home/jingwu/workspace/github_token`；每次 push 通过一次性 `-c credential.helper` 读取，不写入 `.git/config` 或远程 URL。
 
 Do not assume a global or default identity applies.
 See `AGENTS.md` → Credentials and Environment Isolation.
@@ -79,7 +82,20 @@ Research/
 
 ### 写作语言
 
-调研文档用中文撰写，方法名、术语和论文标题保留英文原文。
+调研文档用中文撰写，方法名、术语和论文标题保留英文原文。git 提交信息用英文。
+
+### 排版
+
+- 表格只用于短字段的对照。单元格渲染后的显示宽度不超过 40（约 20 个汉字；链接目标与强调符号不计）；不超过 3 列的表格允许最后一列是长文本。
+- 超出时改用列表：每项以加粗关键词开头，细节写在子项里。
+- 论文目录每篇一项：第一行 `**简称** · 年份 · 会议/期刊 · 链接`，子项依次为完整英文标题、一句话；没有发表处的写"预印本"。
+- 阅读顺序用编号列表；"问题 + 来源"类清单写成"问题（来源）"。
+- 链接写成可点击的 Markdown 链接，arXiv 写成 `https://arxiv.org/abs/<id>`。
+- 检查：`python3 -I .claude/skills/literature-survey/scripts/check_tables.py <md 文件...>`，输出中以 `WIDE` 开头的表格需要改写。
+
+### 调研流程
+
+新开或更新一个研究方向的调研时，按项目 skill `literature-survey`（`.claude/skills/literature-survey/SKILL.md`）执行。
 
 ## Onboarding
 

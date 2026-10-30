@@ -34,12 +34,18 @@
 
 ## 关键结果
 
-| 对比 | SuperMimic | 基线 |
-|---|---|---|
-| 超过 SONIC 已发布 checkpoint 的归一化回报 | 1 × H100，3 h | SONIC：128 × L40，约 168 h |
-| 129,514 条动作基准上的失败数 | 25（1 GPU，3 h）；0（2 GPU，9.8 h） | SONIC checkpoint：179 |
-| LAFAN1 受控对比，达到回报 0.82 | 1 GPU，1.2 h | PPO-Sim 18 h 内未达到；最终 0.60（1 GPU）/ 0.70（4 GPU）/ 0.72（8 GPU） |
-| 训练数据 | BONES-SEED 264.56 h | SONIC 611 h |
+- **超过 SONIC 已发布 checkpoint 的归一化回报**
+  - SuperMimic：1 × H100，3 h
+  - 基线：SONIC：128 × L40，约 168 h
+- **129,514 条动作基准上的失败数**
+  - SuperMimic：25（1 GPU，3 h）；0（2 GPU，9.8 h）
+  - 基线：SONIC checkpoint：179
+- **LAFAN1 受控对比，达到回报 0.82**
+  - SuperMimic：1 GPU，1.2 h
+  - 基线：PPO-Sim 18 h 内未达到；最终 0.60（1 GPU）/ 0.70（4 GPU）/ 0.72（8 GPU）
+- **训练数据**
+  - SuperMimic：BONES-SEED 264.56 h
+  - 基线：SONIC 611 h
 
 论文自述的算力比：墙钟约 56×，GPU-h 约 7200×（标题用 >1000×）。论文同时说明 H100 与 L40 峰值算力不同（fp32 为 0.74×，tensor core 为 5.5×），SONIC 不是在相同条件下重训的。
 

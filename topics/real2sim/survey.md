@@ -31,7 +31,7 @@ RealityGap-Survey 把 sim-to-real 的方法分为"缩小 gap"（改进仿真、�
 |---|---|---|
 | 策略训练（RL 微调） | 可闭环交互、接触大致正确 | RialTo, CASHER, X-Sim, VR-Robo |
 | 数据生成（IL / VLA 示教） | 像素逼真，接触可近似甚至关闭 | Re3Sim, DREAM, R2R2R, RoboSplat |
-| 策略评测 | 仿真结果与真实结果相关（Pearson r、MMRV） | SIMPLER, PolaRiS, ReVeal |
+| 策略评测 | 仿真与真实结果相关（r、MMRV） | SIMPLER, PolaRiS, ReVeal |
 | 规划 / MPC | 动力学预测准确、速度快 | PhysTwin, PGND, Picasso |
 
 **轴三：保真度目标**
@@ -41,7 +41,7 @@ RealityGap-Survey 把 sim-to-real 的方法分为"缩小 gap"（改进仿真、�
 | 数字孪生（twin） | 精确复现一个真实场景 | RialTo, DRAWER, PolaRiS |
 | 数字表亲（cousin） | 与真实场景语义/几何相似的一组变体 | ACDC, SimFoundry, Seeing2Sim |
 | 生成式分布 | 从真实输入出发生成大量任务与场景 | GRS, Video2Policy, RoboTwin |
-| 学习型世界模型 | 不显式重建，直接从数据学习动作条件的视频模型 | Ctrl-World, Veo-WS, WorldGym |
+| 学习型世界模型 | 不显式重建，从数据学动作条件视频模型 | Ctrl-World, Veo-WS, WorldGym |
 
 一个典型的 2025–2026 流水线：
 
@@ -215,50 +215,54 @@ RoboSnap、DEXTERA、SimFoundry、SceneRig 都是这种结构的实例。
 
 ## 10. 文献自述的开放问题
 
-| 问题 | 陈述来源 |
-|---|---|
-| 只支持刚体，无法处理布、液体、植物、颗粒 | SplatSim, RoboGSim, Re3Sim, X-Sim, DREAM, TwinAligner, SIMPLER, RoboSnap, CASHER, GaussGym |
-| 关节推断只有转动/平移，缺关节限位、摩擦、阻尼；多自由度与闭链未解决 | URDFormer, Real2Code, SPARK；RealityGap-Survey 称关节推断仍有"considerable gap" |
-| 物理参数靠手设或 VLM 猜测 | Re3Sim, X-Sim, PolaRiS, ReVeal, RoboSnap, DEXTERA, GRS |
-| 接触参数未辨识；转动惯量难辨识 | Scalable Real2Sim, ASID |
-| 光照烘焙，插入物体与场景光照不一致 | RoboGSim, DISCOVERSE, RL-GSBridge, DRAWER；PolaRiS 认为 GS 可能需要让位于基于扩散的渲染 |
-| 重建与人工成本仍是瓶颈 | RoboSimGS, DISCOVERSE, TwinAligner, SIMPLER, Real2Sim-Eval, VR-Robo, Vid2Sim |
-| 单视图重建不满足机器人要求，几何指标好不等于任务成功 | SVMR-Bench |
-| 可观测性：遮挡下视觉修正失效，需要完整观测 | Real-is-Sim, DreMa |
-| 评测覆盖与统计量不足；尚无可靠的场景验收规则 | Real-is-Sim, Real2Sim-Eval, PolaRiS, RobotArena∞, YUBI-Real2Sim；RealityGap-Survey 称让仿真评测对齐真实表现仍是开放问题 |
-| 视频重建度量不可靠 | Wanderland, VideoMimic（"monocular 4D human–scene recovery is still brittle in the wild"） |
-| 动态场景、非刚性行人、偏离记录视角后质量下降 | RAD, HUGSIM, GaussGym, Wanderland |
-| 辨识病态、多解与局部极小 | DPSI, PhysConsistent-R2S, DROPO, SPI-Active；RealityGap-Survey 称基于仿真的推断是病态的 |
-| 机器人侧对齐依赖动捕、损耗硬件、高维残差模型数据需求大 | ASAP, SPI-Active, UAN |
-| 世界模型评测器：幻觉、接触与小物体失真、绝对成功率偏低、依赖人工打分 | WorldEval, WorldGym, Ctrl-World, Veo-WS, PhysCanvas |
+- 只支持刚体，无法处理布、液体、植物、颗粒（SplatSim, RoboGSim, Re3Sim, X-Sim, DREAM, TwinAligner, SIMPLER, RoboSnap, CASHER, GaussGym）
+- 关节推断只有转动/平移，缺关节限位、摩擦、阻尼；多自由度与闭链未解决（URDFormer, Real2Code, SPARK；RealityGap-Survey 称关节推断仍有"considerable gap"）
+- 物理参数靠手设或 VLM 猜测（Re3Sim, X-Sim, PolaRiS, ReVeal, RoboSnap, DEXTERA, GRS）
+- 接触参数未辨识；转动惯量难辨识（Scalable Real2Sim, ASID）
+- 光照烘焙，插入物体与场景光照不一致（RoboGSim, DISCOVERSE, RL-GSBridge, DRAWER；PolaRiS 认为 GS 可能需要让位于基于扩散的渲染）
+- 重建与人工成本仍是瓶颈（RoboSimGS, DISCOVERSE, TwinAligner, SIMPLER, Real2Sim-Eval, VR-Robo, Vid2Sim）
+- 单视图重建不满足机器人要求，几何指标好不等于任务成功（SVMR-Bench）
+- 可观测性：遮挡下视觉修正失效，需要完整观测（Real-is-Sim, DreMa）
+- 评测覆盖与统计量不足；尚无可靠的场景验收规则（Real-is-Sim, Real2Sim-Eval, PolaRiS, RobotArena∞, YUBI-Real2Sim；RealityGap-Survey 称让仿真评测对齐真实表现仍是开放问题）
+- 视频重建度量不可靠（Wanderland, VideoMimic（"monocular 4D human–scene recovery is still brittle in the wild"））
+- 动态场景、非刚性行人、偏离记录视角后质量下降（RAD, HUGSIM, GaussGym, Wanderland）
+- 辨识病态、多解与局部极小（DPSI, PhysConsistent-R2S, DROPO, SPI-Active；RealityGap-Survey 称基于仿真的推断是病态的）
+- 机器人侧对齐依赖动捕、损耗硬件、高维残差模型数据需求大（ASAP, SPI-Active, UAN）
+- 世界模型评测器：幻觉、接触与小物体失真、绝对成功率偏低、依赖人工打分（WorldEval, WorldGym, Ctrl-World, Veo-WS, PhysCanvas）
 
 ## 11. 现有综述与本分类的对照
 
 检索范围内没有专门以 real2sim 为主题的综述；它作为一类方法出现在 sim-to-real 综述中，或作为 3D 生成的一种用途出现。
 
-| 综述 | 组织方式 | real2sim 的位置 |
-|---|---|---|
-| RealityGap-Survey | gap 成因：动力学、感知、执行、系统设计；方法：缩小 vs 克服 | "Real-to-Sim First" 归在改进仿真下，拆成几何、运动学/动力学、渲染三个逆问题 |
-| 3DGen4Robot-Survey | 3D 生成的三种角色：数据生成器、仿真环境、Sim2Real 桥 | 桥内再分场景重建、运动学重建、物理/视觉–动力学对齐；不含室外与驾驶 |
-| 3DGS-Robotics-Survey | 场景理解 vs 交互；技术进展分适应性与效率 | 只作为未来方向出现 |
-| NeuralFields-Survey | 4 种表示 × 5 个领域 | 分散在各领域中 |
-| DT2EAI-Review | 无正式分类；孪生中训练、人体孪生、大规模环境孪生三种协同 | 孪生中训练 |
+- **RealityGap-Survey**
+  - 组织方式：gap 成因：动力学、感知、执行、系统设计；方法：缩小 vs 克服
+  - real2sim 的位置："Real-to-Sim First" 归在改进仿真下，拆成几何、运动学/动力学、渲染三个逆问题
+- **3DGen4Robot-Survey**
+  - 组织方式：3D 生成的三种角色：数据生成器、仿真环境、Sim2Real 桥
+  - real2sim 的位置：桥内再分场景重建、运动学重建、物理/视觉–动力学对齐；不含室外与驾驶
+- **3DGS-Robotics-Survey**
+  - 组织方式：场景理解 vs 交互；技术进展分适应性与效率
+  - real2sim 的位置：只作为未来方向出现
+- **NeuralFields-Survey**
+  - 组织方式：4 种表示 × 5 个领域
+  - real2sim 的位置：分散在各领域中
+- **DT2EAI-Review**
+  - 组织方式：无正式分类；孪生中训练、人体孪生、大规模环境孪生三种协同
+  - real2sim 的位置：孪生中训练
 
 本综述的三轴框架（重建对象 × 用途 × 保真度目标）与 RealityGap-Survey 的三个逆问题对应，并把机器人侧动力学单列，把评测作为一种用途显式区分。
 
 ## 12. 入门阅读顺序
 
-| 顺序 | 论文 | 理由 |
-|---|---|---|
-| 1 | RealityGap-Survey | 交代 real2sim 在 sim-to-real 方法中的位置，以及为什么几何、动力学、渲染是三个独立的逆问题 |
-| 2 | RialTo | 现代操作 real-to-sim-to-real 闭环的定义，说明一个可用孪生最少需要什么 |
-| 3 | ACDC | 提出数字表亲，引出贯穿后续文献的孪生 vs 表亲问题 |
-| 4 | SplatSim | 在刚体仿真上叠加 GS 渲染做零样本 RGB 策略迁移的最小配方 |
-| 5 | SIMPLER | 配对仿真/真实评测协议与 MMRV、Pearson 指标的来源 |
-| 6 | PolaRiS | 当前 GS 评测通用 VLA 的参考，含渲染与联合训练消融和对世界模型评测器的直接对比 |
-| 7 | SimOpt → ASID | 黑盒参数分布闭环，以及"采什么真实数据"如何决定辨识质量 |
-| 8 | PhysTwin | 面向机器人的形变物理孪生，零阶 + 梯度两阶段逆物理 |
-| 9 | ASAP（配合 SPI-Active） | 机器人侧对齐的残差动作路线与参数化路线 |
-| 10 | SimFoundry（配合 SceneRig、AssetFidelity-Eval） | 2026 年端到端流水线及保真度对评测影响的定量证据 |
-| 11 | VR-Robo → GaussGym → Wanderland | 运动/导航中"GS 渲染 + 网格物理"的配方、规模化版本与度量可靠性反证 |
-| 12 | Ctrl-World（配合 Veo-WS） | 学习型仿真器评测的代表，及其与现实分歧之处 |
+1. **RealityGap-Survey**：交代 real2sim 在 sim-to-real 方法中的位置，以及为什么几何、动力学、渲染是三个独立的逆问题
+2. **RialTo**：现代操作 real-to-sim-to-real 闭环的定义，说明一个可用孪生最少需要什么
+3. **ACDC**：提出数字表亲，引出贯穿后续文献的孪生 vs 表亲问题
+4. **SplatSim**：在刚体仿真上叠加 GS 渲染做零样本 RGB 策略迁移的最小配方
+5. **SIMPLER**：配对仿真/真实评测协议与 MMRV、Pearson 指标的来源
+6. **PolaRiS**：当前 GS 评测通用 VLA 的参考，含渲染与联合训练消融和对世界模型评测器的直接对比
+7. **SimOpt → ASID**：黑盒参数分布闭环，以及"采什么真实数据"如何决定辨识质量
+8. **PhysTwin**：面向机器人的形变物理孪生，零阶 + 梯度两阶段逆物理
+9. **ASAP（配合 SPI-Active）**：机器人侧对齐的残差动作路线与参数化路线
+10. **SimFoundry（配合 SceneRig、AssetFidelity-Eval）**：2026 年端到端流水线及保真度对评测影响的定量证据
+11. **VR-Robo → GaussGym → Wanderland**：运动/导航中"GS 渲染 + 网格物理"的配方、规模化版本与度量可靠性反证
+12. **Ctrl-World（配合 Veo-WS）**：学习型仿真器评测的代表，及其与现实分歧之处
