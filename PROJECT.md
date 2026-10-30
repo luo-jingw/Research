@@ -50,11 +50,11 @@ Do not record token values or other secrets here.
 
 ```
 Research/
+├── README.md                全部研究方向的索引
 ├── AGENTS.md / PROJECT.md / plan.md / issues.md / opportunities.md
 ├── docs/                    跨 topic 的已验证内容（术语表、方法论等）
 ├── templates/               模板自带文件
 └── topics/
-    ├── README.md            全部研究方向的索引
     └── <topic-slug>/        一个研究方向一个目录
         ├── README.md        范围（含 / 不含）、关键词、状态、文件索引
         ├── survey.md        综述：分类法、各分支脉络、趋势、文献陈述的开放问题
@@ -71,7 +71,7 @@ Research/
 
 ### 状态归属
 
-- `topics/README.md` 拥有 topic 列表；新建 topic 目录时同步加一行。
+- 根目录 `README.md` 拥有 topic 列表；新建 topic 目录时同步加一行，综述完成前不加链接。
 - `topics/<slug>/papers.md` 拥有该方向的论文元数据（标题、年份、会议、链接）。一篇论文属于多个方向时，各方向的 `papers.md` 各列一行，精读笔记只存一份，放在主归属方向的 `notes/`，其他方向用相对路径链接。
 - `survey.md` 只写可溯源到文献的内容，每个论断引用 `papers.md` 中的简称。自己的推测和研究点子写入根目录 `opportunities.md`，`Area:` 填 topic slug。
 - 调研中未能核实的元数据、相互矛盾的论文结论写入根目录 `issues.md`，`Area:` 填 topic slug。
@@ -83,4 +83,4 @@ Research/
 
 ## Onboarding
 
-先读 `topics/README.md` 了解已有研究方向，再进入对应 `topics/<slug>/README.md`。
+先读根目录 `README.md` 了解已有研究方向，再进入对应 `topics/<slug>/README.md`。
