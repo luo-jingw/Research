@@ -123,3 +123,42 @@ Area: humanoid-motion-tracking
 ## Promotion Condition
 
 有可运行的 SuperMimic 实现（官方或已验证的复现）与 RWM 开源代码（github.com/leggedrobotics/robotic_world_model）。
+
+# OPT-005
+
+Status: open
+
+Area: vla-fast-control, real2sim
+
+## Observation
+
+- 加速失败的主要原因是控制器与机器人–物体动力学变化、推理延迟、精确阶段不耐加速（`topics/vla-fast-control/survey.md` §3.1）。SAIL 自述没有处理动力学变化，呼吁引入动力学模型或仿真数据。
+- RACE、RoboPace 的重定时只考虑机器人运动学限幅；RoboPace 报告只考虑物理限幅的重定时在接触附近"largely fail"。
+- 真机 RL 能同时提升成功率与节拍（HIL-SERL 1.8×、π*0.6 吞吐 >2×、RLT 关键阶段最多 3×），代价是人工奖励标注、干预与复位（π*0.6 自述）。
+- 仿真 RL 已能零真实示教或少量示教提升真机成功率（SimpleVLA-RL、GenWorld-RL、RL-Co），GenWorld-RL 报告真机执行快 1.13×；这些工作的优化目标是成功率，不是节拍。
+- Sim&Real Pushing：接触任务中物理 gap 比视觉 gap 更重要。
+- 检索范围内没有同时做到"少量遥操作示教 + 动力学经辨识的仿真 + 以节拍为优化目标"的工作（survey.md §5）。
+
+## Opportunity
+
+从少量遥操作示教微调的 VLA 出发，在动力学经辨识、并注入实测推理延迟的仿真孪生中，用 RL 以节拍为目标训练速度头或残差，同时用真实示教做锚定，再零样本或少量真机 RL 部署。
+
+## Expected Mechanism
+
+假设：
+- 加速失败中可由仿真复现的部分（机器人与物体的动力学变化、推理延迟导致的块错位）占主导；动力学经辨识（参照 real2sim 综述 §5–§6 的 ASID、SPI-Active、PhysTwin）后，仿真中学到的提速能迁移到真机；
+- 仿真承担高速区域的探索，避免真机 RL 的人工复位与安全成本；真实锚定防止策略偏离示教的精确阶段。
+
+## Required Evidence
+
+在同一任务与机器人上对比：
+1. 示教重定时（DemoSpeedup）；
+2. 推理时重定时（RACE 或 SAIL）；
+3. 默认物理参数仿真中的节拍 RL；
+4. 辨识后物理参数仿真中的节拍 RL。
+
+报告真机节拍、成功率，以及仿真与真机节拍之差，并分别消融动力学辨识与延迟注入。
+
+## Promotion Condition
+
+确定具体机器人与任务，有可用的仿真（IsaacLab / ManiSkill / MuJoCo）孪生，并能采集该任务的少量遥操作示教。

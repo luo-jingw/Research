@@ -76,3 +76,40 @@ Area: humanoid-motion-tracking
 - 补检 2025–2026 年"经学习动力学反传梯度训练腿足/人形策略"的工作，核对 survey.md §3 的覆盖。
 
 ## Resolution
+
+# ISSUE-003
+
+Status: open
+
+Area: vla-fast-control
+
+## Observation
+
+第一轮 vla-fast-control 综述（`topics/vla-fast-control/papers.md`）中，部分发表处未在一手来源确认，部分条目缺少 arXiv 或关键细节；各论文的延迟测量口径不统一。
+
+## Impact
+
+引用标 † 的发表处或下列细节前需回到一手来源确认；延迟数字只能在同一论文内比较。
+
+## Evidence
+
+| 条目 | 问题 |
+|---|---|
+| ACT (2304.13705)、HIL-SERL (2410.21845)、ConRFT (2502.05450)、UMI (2402.10329) | 发表处（RSS 2023 / Science Robotics 2025 / RSS 2025 / RSS 2024）不在 arXiv comment 中，未在论文集确认 |
+| DemoSpeedup (2506.05064) | CoRL 2025 只来自 mlanthology 索引 |
+| SpeedTuning (2608.09138) | arXiv v1 为 2026-08，但 comment 写 ICRA 2025 |
+| RACE | 无 arXiv，只在项目页与 OpenReview 确认 |
+| Helix | 无论文，数字来自 Figure 博客（2025-02-20） |
+| MiniVLA | 未找到 arXiv，博客未打开 |
+| MetaGenSim | 所用预训练 VLA 的身份未确认 |
+| RLDG、PA-RL、RLT | 基模型（RLDG）、示教条数（PA-RL、RLT）未确认 |
+| RL-Co (2602.12628) | 正文原话是 200 条纯真实示教的基线 "lower than or comparable to" 20 条示教的 RL-Co（Open Drawer，π0.5），不是明确超过 |
+| 延迟数字 | 各论文是否包含图像编码、网络传输、去噪步数不同，跨论文不可直接比较 |
+
+## Hypotheses
+
+## Next Experiment
+
+引用前打开对应论文的 arXiv 最新版本或会议论文集核对；需要跨模型比较延迟时，在同一硬件与同一口径下自测。
+
+## Resolution
