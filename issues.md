@@ -107,3 +107,43 @@ Area: vla-fast-control
 引用前打开对应论文的 arXiv 最新版本或会议论文集核对；需要跨模型比较延迟时，在同一硬件与同一口径下自测。
 
 ## Resolution
+
+# ISSUE-004
+
+Status: open
+
+Area: sim-real-cotraining
+
+## Observation
+
+第一轮 sim-real-cotraining 综述（`topics/sim-real-cotraining/papers.md`）中，部分发表处只见于索引或二手来源，部分论文原文内部数字不一致，部分数字只来自摘要，引用扫描有缺口。
+
+## Impact
+
+引用标 † 的发表处或下列数字前需回到一手来源确认；检索缺口可能漏掉 2026 年的后续工作。
+
+## Evidence
+
+- **发表处只见于索引或二手来源**：
+  - DataMIL (2505.09603)：ICLR 2026 只见于 TUCO 的参考文献
+  - Re-Mix (2408.14037)：CoRL 2024 只见于二手来源
+  - EgoMimic (2410.24221)：ICRA 2025 只见于二手来源
+  - AnchorDream (2512.11797)、SimLauncher (2507.04452)：ICRA 2026 / IROS 2025 只见于 OpenAlex 的 DOI 记录
+  - simDP：无 arXiv，Sensors 2026 元数据来自 OpenAlex；与 ICML 2026 论文 "Encoder-Adapted Sim-to-Real Transfer of Simulation-Trained Diffusion Policies for Robot Manipulation" 作者部分重合，关系未核实
+  - MimicLabs (2506.13536)：Semantic Scholar 标为 ICLR，未确认
+  - Sim&Real Co-Train (2503.24361)：部分来源称 RSS 2025，arXiv comment 未写
+- **原文内部不一致**：
+  - Mechanistic Co-Train：正文称最佳方法约 74%，Table 2 的 21/30 为 70%；附录 D.5 搜索区间中 N、M 的命名与正文定义似乎相反
+  - RoboCousin：Table 3 表注写每个策略 1,000 条仿真轨迹，正文写 400 条
+  - Humanoid Dex Sim2Real：引言称新物体上提升 80~100%，表中没有对应拆分
+- **只核实了摘要的数字**：RoboRender、PhyVisGen、GaussianFactory、DiscoDemo、EmbodiRSI、TANDEM、F4R、RoboCurate、Real2Edit2Real
+- **引用扫描缺口**：Semantic Scholar 多次返回 429，GR00T N1、RoboCasa、DreamGen、RoboTwin 2.0、DP3、EgoBridge、PLD 的被引列表未扫描或未扫完
+- **发现但未纳入的候选**：EVA (2603.17808)、World Action Verifier (2604.01985)、DreamZero (2602.15922)、TC-IDM (2601.18323)、VERA、AutoTrialGen、"Physically-Grounded Data Generation via Video Diffusion Models"、"Gotta Scoop 'Em All"（Semantic Scholar 标 ICRA 2026）、ProMix、AlphaNIST (2610.13354，comment 只写 ICRA)
+
+## Hypotheses
+
+## Next Experiment
+
+引用前打开对应论文的 arXiv 最新版本或论文集核对；第二轮检索时补扫上述论文的被引列表。
+
+## Resolution

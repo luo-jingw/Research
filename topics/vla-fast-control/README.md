@@ -34,3 +34,4 @@ VLA, inference acceleration, action chunking, real-time chunking, asynchronous i
 
 - 待核实的元数据：根目录 `issues.md` → ISSUE-003
 - 候选研究方向：根目录 `opportunities.md`，`Area: vla-fast-control`
+- 少量遥操作 + 仿真训练配方的专门综述：[sim-real-cotraining](../sim-real-cotraining/README.md)
