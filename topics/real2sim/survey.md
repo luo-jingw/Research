@@ -162,6 +162,7 @@ RoboSnap、DEXTERA、SimFoundry、SceneRig 都是这种结构的实例。
   - YUBI-Real2Sim：9 个场景–任务组合中 8 个复现了真实排序，但新视角质量分数不能作为场景验收规则。
   - AssetFidelity-Eval、SceneRig、SimFoundry 的结果见 §2.2。
 - **典型验证规模**：2–8 个策略 × 3–8 个任务，每格 10–60 次真实试验。
+- **绝对成功率偏低**：部署场景重建评测同样常低于真机（DREAM 低 7–14 个百分点，排序保持）。原因与排查见 [sim-real-cotraining 综述 §5.2](../sim-real-cotraining/survey.md)。
 
 ### 7.2 学习型世界模型作为评测器
 

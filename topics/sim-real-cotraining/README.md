@@ -3,7 +3,7 @@
 大量仿真数据 + 少量真实遥操作数据训练机器人策略：仿真数据提供行为的覆盖面，真实数据校准视觉、动力学与行为细节。重点是部署场景已有数字孪生时的训练配方。
 
 - 状态：第一轮综述完成（快照 2026-10-31）
-- 最后更新：2026-10-31
+- 最后更新：2026-11-02
 
 ## 范围
 
@@ -26,7 +26,7 @@ sim-and-real co-training, sim-to-real, real-to-sim-to-real, digital twin, digita
 
 | 文件 | 内容 |
 |---|---|
-| [survey.md](survey.md) | 方向名称与分类框架；数据组合、孪生内数据生成、模型侧 gap 处理、共训练后的策略提升；趋势、开放问题、入门阅读顺序 |
+| [survey.md](survey.md) | 方向名称与分类框架；数据组合、孪生内数据生成、模型侧 gap 处理、部署场景孪生的用法与仿真成功率低于真机的原因、共训练后的策略提升；趋势、开放问题、入门阅读顺序 |
 | [papers.md](papers.md) | 论文目录，142 篇按综述分节，另 34 篇补充 |
 | [notes/2025-sim-real-cotrain.md](notes/2025-sim-real-cotrain.md) | 锚点论文精读：Sim-and-Real Co-Training |
 | `reports/` | 对外汇报材料（尚无） |
