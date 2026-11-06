@@ -10,6 +10,7 @@
 | [humanoid-motion-tracking](topics/humanoid-motion-tracking/README.md) | 第一轮综述 · 2026-10-30 | 人形机器人全身控制的动作跟踪路线（DeepMimic → BeyondMimic → SONIC → SuperMimic），含可微学习动力学 / 世界模型训练分支 |
 | [vla-fast-control](topics/vla-fast-control/README.md) | 第一轮综述 · 2026-10-30 | VLA 实机快速控制：推理加速与实时执行、超过示教速度的执行、少量遥操作数据 + 仿真的训练配方 |
 | [sim-real-cotraining](topics/sim-real-cotraining/README.md) | 第一轮综述 · 2026-10-31 | 大量仿真数据 + 少量真实遥操作的训练配方：混合与分阶段、gap 对齐、孪生内数据生成、共训练后的策略提升 |
+| [data-distribution-generalization](topics/data-distribution-generalization/README.md) | 第一轮综述 · 2026-11-06 | 训练数据的分布形状与泛化：频率偏斜与长尾、同一实例的多变重复、属性组合的覆盖、动作风格的一致性；覆盖认知发展、视觉、LLM 与具身 |
 
 每个 topic 目录下：
 

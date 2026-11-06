@@ -147,3 +147,49 @@ Area: sim-real-cotraining
 引用前打开对应论文的 arXiv 最新版本或论文集核对；第二轮检索时补扫上述论文的被引列表。
 
 ## Resolution
+
+# ISSUE-005
+
+Status: open
+
+Area: data-distribution-generalization
+
+## Observation
+
+第一轮 data-distribution-generalization 综述（`topics/data-distribution-generalization/papers.md`）中，部分发表处只见于索引或二手来源，部分数字在原文内部不一致或缺少口径，几组论文的结论相互冲突。
+
+## Impact
+
+引用标 † 的发表处或下列数字前需回到一手来源确认；冲突的结论在综述中只陈述各自原文，尚无对照实验解释。
+
+## Evidence
+
+- **发表处只见于索引或二手来源**：
+  - Power Law CR (2604.22951)：ICML 2026 只见于 OpenReview 与 PDF 页脚，arXiv abs 页没有 comment
+  - Uniform Cluster Prior (2210.07277)：ICLR 2023 未在一手页面确认
+  - CLEVR-CoGenT (1612.06890)、TMN (1905.05908)：CVPR 2017 / ICCV 2019 未在 CVF 页面确认（访问被拦截）
+  - Category-Viewpoint OOD (2007.08032)：Nature Machine Intelligence 2022 未确认
+  - Env Drivers (1910.00571)、Zipfian Env (2203.08222)：ICLR 2020 / CoLLAs 2022 只见于 OpenReview、dblp
+  - Factor World (2307.03659)、PVR-Robust (2312.12444)：未找到发表处，不在 CoRL 2023 的 PMLR 卷中
+- **原文内部不一致或缺口径**：
+  - MOSAIC (2605.00273)：组合实验的数据集规模，正文写 10k / 50k / 100k，Table 1 写 10k / 20k / 100k；偏斜实验的具体偏斜比例没有在正文给出数字
+  - SSL Curation (2405.15613)：幂律重采样 ImageNet（82.7 → 57.0）时，原文没有说明各 α 下的总样本量是否相同
+  - Perfect-Demo (2606.15587)：摘要数字与 HTML v2 的 Table 1 不一致，综述取表中数字
+  - Infant Lumpy (2510.15060)：主效应 D = 3.83 的单位在正文中没有写明；v1 标题为 "...found in everyday infant experiences"
+- **结论冲突**：
+  - 因素组合的难度是否叠加：Factor World 称多数因素对不叠加难度；LIBERO-Plus 报告成对扰动有一致的负组合性 gap（"non-decomposable"）
+  - 重复的利弊：Repeated Data 中 0.1% 数据重复 100 次显著损害预训练；Repeated Examples 与 Long-CoT Repetition 中小数据多次重复优于大数据单次。设定不同（通用预训练、算术任务、长 CoT SFT），没有同设定对照
+  - 视觉数据整理：SSL Curation 主张 SSL 数据应 "large, diverse and balanced"；DataComp 在固定训练所见样本数时，更小、过滤更严（重复更多）的子集更好
+- **结论未核实**：Wonnacott 2012 (DOI 10.1016/j.jml.2011.11.004) 只核实了元数据，未取得摘要，其关于偏斜与均衡输入的结论未知
+- **简称冲突**：CRAFT (2610.00524) 与 2602.12532 同名；ACT-VLA (2607.00351) 易与 ACT（Action Chunking Transformer）混淆
+- **发现但未纳入的候选**：AC-VLA (2607.15714)、ReGuide (2609.38616)、ACG-Bench (2610.06184)、VIMA (2210.03094)、Policy Architectures for Compositional Generalization in Control (2203.05960)、Adversarial Data Collection (2503.11646)、Simple-to-Complex Structured Demonstrations (2607.04591)、DROPO (2201.08434)、Understanding Domain Randomization for Sim-to-real Transfer (2110.03239)、WARP-RM (2606.28320)、SCIZOR (2505.22626)、PSD (2605.01544)、From 12 to 200 Demonstrations (2610.37170)、CIFT (2509.24797)
+
+## Hypotheses
+
+- 因素难度是否叠加的冲突，可能来自策略规模与评测任务的差异：Factor World 用 RT-1 类策略和拾取任务，LIBERO-Plus 用大型 VLA 和 LIBERO 任务。
+
+## Next Experiment
+
+引用前打开对应论文的 arXiv 最新版本、论文集或期刊页核对；第二轮检索时精读 Wonnacott 2012 与 MOSAIC 附录，补齐缺失的口径。
+
+## Resolution
