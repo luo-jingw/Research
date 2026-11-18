@@ -347,3 +347,77 @@ Area: data-distribution-generalization
 ## Promotion Condition
 
 有部署场景的仿真孪生可以按指定的速度剖面与位姿分布生成示教，并有少量同任务的真实遥操作示教。
+
+# OPT-011
+
+Status: open
+
+Area: vla-drawing-writing
+
+## Observation
+
+- 本方向所有 VLA / WAM 仿真写画结果（BURGER、DAP）都建立在 ManiSkill3 的几何伪墨迹上：笔迹只取决于末端几何轨迹，环境不要求抓握工具（`topics/vla-drawing-writing/survey.md` §5.2）。
+- 由接触力决定笔迹宽度和深浅的仿真环境已有（Grip, Trace, Write），但控制器是 BC + RL，不是 VLA。
+- 力/触觉 VLA 中与白板相关的任务几乎都是擦拭；唯一做白板书写的触觉 VLA（FG-CLTP）没有"去掉触觉的同一 VLA"对照（survey §3.3、§7）。
+- 现有 VLA / WAM 写画工作都没有把笔顺或笔压列为指标（survey §5.3）。
+
+## Opportunity
+
+在由接触力决定墨迹的仿真中评测 VLA 写画，比较：
+- 纯视觉 VLA（如 π0.5）；
+- 同一 VLA 加力或触觉 token；
+- WAM。
+
+任务从画圆、字母到汉字，目标笔画带力剖面；同时比较刚性固定笔与自由握笔两种设置。
+
+## Expected Mechanism
+
+假设：
+- 伪墨迹下视觉 VLA 足够；墨迹由力决定后，力误差要等笔迹出现在画面里才能被看到，纯视觉 VLA 的断笔率与力误差会高于带力输入的 VLA；
+- 自由握笔时握持滑动会改变笔尖位置，需要触觉或高频力反馈才能纠正。
+
+## Required Evidence
+
+同一任务集、同一示教数下，报告：
+- 形状误差（Chamfer 或离散 Fréchet 距离）与有序完成度；
+- 力 MAE、断笔率、掉笔率；
+- 去掉力输入的消融；
+- 少量真机配对评测。
+
+## Promotion Condition
+
+有可运行的、由接触力决定墨迹的仿真环境（例如 Grip, Trace, Write 的环境，或在 ManiSkill3 上实现的力–墨迹模型），以及一个能接入力或触觉 token 的开源 VLA。
+
+# OPT-012
+
+Status: open
+
+Area: vla-drawing-writing, sim-real-cotraining
+
+## Observation
+
+- 写画示教可以从矢量笔画程序生成，在仿真和真机上开环回放，不需要遥操作（BURGER、DrawAnything，`topics/vla-drawing-writing/survey.md` §5.4）。
+- 画布图像记录了完整的执行结果，可以自动打分（Chamfer 距离、DINOv3 相似度），真机评测便宜且口径一致（survey §5.3）。
+- BURGER 只用 100 条真机示教就能让 π0.5 作画，并提到与 13,200 条仿真示教共训后的 sim-to-real，但没有给数值（survey §2.1）。
+- 学习的世界模型也被用作写画的模拟器（VLAW），但笔迹保真度没有单独评测（survey §3.2、§4）。
+
+## Opportunity
+
+用写画作为 sim + real 共训练的受控测试域：
+- 固定真机示教数（例如 10 / 50 / 100 条），扫仿真与真机的配比；
+- 在仿真和真机上回放同一组 SVG，得到配对数据，分开视觉 gap（画布渲染、手臂遮挡）与执行 gap（笔尖接触、速度）；
+- 比较物理仿真（ManiSkill3）与动作条件世界模型（Ctrl-World 类）生成的写画数据对真机表现的增益。
+
+## Expected Mechanism
+
+假设：写画的执行 gap 小（平面运动、接触力低、开环可复现），视觉 gap 占主导。因此在观测对齐之后（例如 BURGER 把真机画布对齐到仿真画布坐标系的做法），同条数的仿真数据带来的增益应接近真机数据。如果实际差距明显，说明笔尖接触或执行速度造成的差异被低估了。
+
+## Required Evidence
+
+- 真机画布的 Chamfer 距离与语义相似度随仿真/真机配比变化的曲线；
+- 配对回放下两边笔迹的逐点偏差；
+- 物理仿真数据与世界模型数据的对照。
+
+## Promotion Condition
+
+有一台装笔的机械臂、对应的仿真画布（例如 ManiSkill3 / BURGER 管线），以及真机画布笔迹的自动提取流程。

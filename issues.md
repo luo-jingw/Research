@@ -193,3 +193,48 @@ Area: data-distribution-generalization
 引用前打开对应论文的 arXiv 最新版本、论文集或期刊页核对；第二轮检索时精读 Wonnacott 2012 与 MOSAIC 附录，补齐缺失的口径。
 
 ## Resolution
+
+# ISSUE-006
+
+Status: open
+
+Area: vla-drawing-writing
+
+## Observation
+
+第一轮 vla-drawing-writing 综述（`topics/vla-drawing-writing/papers.md`）中，部分发表处没有在一手页面确认，部分数字来自图表标签或原文内部不一致；在正文中使用 ManiSkill3 绘图任务的论文召回可能不完整。
+
+## Impact
+
+引用标 † 的发表处或下列数字前需回到一手来源确认。"交集只有 2 篇仿真论文"的结论依赖检索召回，可能偏低。
+
+## Evidence
+
+- **发表处只见于 PDF 页眉或二手来源**：
+  - RDT-1B (2410.07864)：ICLR 2025 只见于 PDF 页眉，arXiv comment 为 "10 pages, conference"
+  - DreamZero (2602.15922)：ICLR 2026 只见于检索结果摘要，未在 arXiv comment 或论文集确认，目录中按预印本列出
+- **图表读数**：
+  - DreamZero Fig. 9 的各柱数值是从 PDF 文本层的柱上标签按列位置对齐读出的；两个子方向与本地核对结果一致，但没有对照图像本身
+  - BURGER §4.1 的数据规模结果只有曲线图，没有数值表
+- **原文内部不一致或缺口径**：
+  - FG-CLTP (2603.10871)：书写任务在 §V-B 写作"在白板上书写指定字符"，在 §V-B2 写作"画不间断的圆"；评测次数没有报告
+  - BURGER (2610.40532)：Table 1 没有 π0 一行；仿真中的机器人型号正文未写；与 13,200 条仿真示教共训的 sim-to-real 只在 §1 提到，没有数值
+- **召回缺口**：
+  - 只在正文中使用 DrawTriangle-v1 / DrawSVG-v1 的论文只能靠全文检索发现（DAP 就是这种情况）；Semantic Scholar 全文片段检索因限流没有完成
+  - ManiSkill3 软体任务中是否仍含 ManiSkill2 的 Write 未核实
+  - LingBot-VA 没有找到一手页面，未筛查
+- **发现但未纳入**：
+  - GeminiPainter (2608.00829)：arXiv 标题是一个描述性句子（"GeminiPainter's sequence-formed pipeline comprised of perception, cognition, planning, and action stages"），VLM 只生成素描、由规划器执行
+  - HiFi-UMI (2607.25895)：用 UMI 重建手写轨迹，被评测的 VLA 不做书写
+  - Gemini Robotics (2503.20020)、WALL-OSS (2509.11766)：字母相关任务是用积木拼词（子方向检索的全文扫描结果，未在本地复核）
+  - MolmoAct (2508.07917)：用户画的轨迹只作为引导条件
+
+## Hypotheses
+
+- DAP 中 π0 在 DrawTriangle-v1 上只有 2.0%，可能部分来自训练不稳定（作者自述在该任务上另调过超参数），不完全反映任务难度。
+
+## Next Experiment
+
+引用前核对 ICLR 2025 / 2026 论文集；对照 DreamZero 原图复核 Fig. 9；第二轮检索时用全文检索补查 "DrawTriangle-v1"、"DrawSVG-v1"、"TableTopFreeDraw" 的使用者。
+
+## Resolution

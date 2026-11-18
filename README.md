@@ -11,6 +11,7 @@
 | [vla-fast-control](topics/vla-fast-control/README.md) | 第一轮综述 · 2026-10-30 | VLA 实机快速控制：推理加速与实时执行、超过示教速度的执行、少量遥操作数据 + 仿真的训练配方 |
 | [sim-real-cotraining](topics/sim-real-cotraining/README.md) | 第一轮综述 · 2026-10-31 | 大量仿真数据 + 少量真实遥操作的训练配方：混合与分阶段、gap 对齐、孪生内数据生成、共训练后的策略提升 |
 | [data-distribution-generalization](topics/data-distribution-generalization/README.md) | 第一轮综述 · 2026-11-06 | 训练数据的分布形状与泛化：频率偏斜与长尾、同一实例的多变重复、属性组合的覆盖、动作风格的一致性；覆盖认知发展、视觉、LLM 与具身 |
+| [vla-drawing-writing](topics/vla-drawing-writing/README.md) | 第一轮综述 · 2026-11-18 | 用 VLA 或 world action model 控制机器人写字、画画，以仿真为主：仿真写画基准与笔迹实现、真机对照、世界模型预测写画画面 |
 
 每个 topic 目录下：
 
