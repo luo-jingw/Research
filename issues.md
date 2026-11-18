@@ -224,10 +224,22 @@ Area: vla-drawing-writing
   - ManiSkill3 软体任务中是否仍含 ManiSkill2 的 Write 未核实
   - LingBot-VA 没有找到一手页面，未筛查
 - **发现但未纳入**：
-  - GeminiPainter (2608.00829)：arXiv 标题是一个描述性句子（"GeminiPainter's sequence-formed pipeline comprised of perception, cognition, planning, and action stages"），VLM 只生成素描、由规划器执行
   - HiFi-UMI (2607.25895)：用 UMI 重建手写轨迹，被评测的 VLA 不做书写
   - Gemini Robotics (2503.20020)、WALL-OSS (2509.11766)：字母相关任务是用积木拼词（子方向检索的全文扫描结果，未在本地复核）
   - MolmoAct (2508.07917)：用户画的轨迹只作为引导条件
+- **agent 分支的元数据与口径**：
+  - Wonderful Team (2407.19094)：TMLR 2025 只见于 PDF 页眉，arXiv comment 为 "aka Wonderful Team"
+  - GeminiPainter (2608.00829)：arXiv abs 页的标题是一个描述性句子，HTML 全文标题为 "GeminiPainter: Real-Time AI-Guided Robotic Sketch Generation for Live Portraiture"；目录沿用 abs 页标题
+  - RURL (2611.18562)：真机逐次记录（App. G）在 HTML 版中只有目录，《星夜》线稿的尝试次数无法核实
+  - MOPS (2505.03725)：绘图域结果只有柱状图，没有数值表
+  - Gym-Anything (2610.40565)：白板任务没有单独数值
+- **agent 分支未找到 arXiv 版本的线索**："Embodied Generative AI Art for Enhanced Human Robot Interaction"（HRI 2025，只见于机构库页面）、"Demonstrating Artistic Drawing on Low-Cost Robot"（CoRL 2025 demo）
+- **agent 分支发现但未纳入**：
+  - RoboBench (2510.17801)：规划原语里有 draw(tool, character, target_object)，未核实评测题是否含写画
+  - KPI (2609.36151)：人形机器人白板写 "NB"，但写字实验用脚本参考，不经 VLM
+  - AnyBody (2606.29209)：人形机器人手腕空中写字，潜空间 RL，没有 LLM
+  - HandwritingAgent (2606.18788)、LVGM (2511.11119)：生成手写或汉字矢量笔画，没有机器人
+  - PainterBench (2609.34195)、AgentDrawBench (2610.19025)、TurtleAI (2606.03626)：数字画布绘图 agent 基准，没有机器人执行
 
 ## Hypotheses
 

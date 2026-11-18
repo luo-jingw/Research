@@ -358,7 +358,7 @@ Area: vla-drawing-writing
 
 - 本方向所有 VLA / WAM 仿真写画结果（BURGER、DAP）都建立在 ManiSkill3 的几何伪墨迹上：笔迹只取决于末端几何轨迹，环境不要求抓握工具（`topics/vla-drawing-writing/survey.md` §5.2）。
 - 由接触力决定笔迹宽度和深浅的仿真环境已有（Grip, Trace, Write），但控制器是 BC + RL，不是 VLA。
-- 力/触觉 VLA 中与白板相关的任务几乎都是擦拭；唯一做白板书写的触觉 VLA（FG-CLTP）没有"去掉触觉的同一 VLA"对照（survey §3.3、§7）。
+- 力/触觉 VLA 中与白板相关的任务几乎都是擦拭；唯一做白板书写的触觉 VLA（FG-CLTP）没有"去掉触觉的同一 VLA"对照（survey §3.3、§8）。
 - 现有 VLA / WAM 写画工作都没有把笔顺或笔压列为指标（survey §5.3）。
 
 ## Opportunity
@@ -421,3 +421,44 @@ Area: vla-drawing-writing, sim-real-cotraining
 ## Promotion Condition
 
 有一台装笔的机械臂、对应的仿真画布（例如 ManiSkill3 / BURGER 管线），以及真机画布笔迹的自动提取流程。
+
+# OPT-013
+
+Status: open
+
+Area: vla-drawing-writing
+
+## Observation
+
+- LLM / VLM agent 写画的精度来自数值层：TrajGen 中输出代码优于直接输出数值（60% vs 10%），MOPS 中不做数值优化的 CaP 解不出绘图任务，CoBrush 用网格选区代替 VLM 直接回归坐标（`topics/vla-drawing-writing/survey.md` §6、§8）。
+- agent 的闭环停在计划层或轮级，没有逐笔的视觉纠错；数字画布上的逐笔闭环（EASEL）也不稳定（survey §6.2、§6.4）。
+- 端到端 VLA 在写画上的失败集中在终止、起点和训练外类别（BURGER），而这些恰好是 VLM 擅长的语义与规划层面（survey §2.1）。
+- 以轨迹草图或 2D 路径为接口的分层 VLM-VLA 工作已经存在（RT-Trajectory、HAMSTER），但没有一篇评测写画；HAMSTER 自述 2D 路径传不了力和旋转（survey §6.3）。
+
+## Opportunity
+
+在仿真写画环境（ManiSkill3 / BURGER 管线）中构建分层系统：VLM 输出笔画序列或轨迹草图，并决定何时结束；VLA 或扩散策略负责执行每一笔，并处理接触；每画完一笔或一个部件，VLM 看一次画布，决定下一笔或修正。对照组为：
+
+- 端到端 VLA（π0.5，与 BURGER 设置相同）；
+- 不经学习策略、由 IK 执行的 VLM 笔画计划；
+- 逐轮闭环与逐笔闭环。
+
+## Expected Mechanism
+
+假设：
+- VLM 负责"画什么、何时停"后，训练外类别与终止失败会减少；学习的低层策略负责落笔与跟随，几何精度优于 IK 直接执行 VLM 坐标；
+- 逐笔闭环能纠正低层的累积偏差，但 VLM 对细小几何偏差的判断不可靠，收益会受限于评判精度。
+
+## Required Evidence
+
+在 BURGER 的单物体与组合任务上，报告：
+- DINOv3 相似度；
+- 训练外类别的成功率；
+- 多画或提前停笔的比例；
+- 形状误差（Chamfer 距离）；
+- VLM 逐笔判断与几何误差之间的一致性；
+- 每幅画的耗时与 VLM 调用次数。
+
+## Promotion Condition
+
+可运行 BURGER 或 ManiSkill3 绘图环境，并有一个可以接受轨迹草图或笔画条件的 VLA（或可在 BURGER 数据上加入此条件后微调）。

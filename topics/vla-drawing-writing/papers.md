@@ -85,9 +85,77 @@
   - Ctrl-World: A Controllable Generative World Model for Robot Manipulation
   - 动作条件视频世界模型；VLAW 中被真机 rollout 微调后用作学习的模拟器
 
-## 7. 相邻工作：控制器不是 VLA / WAM
+## 7. LLM / VLM agent 写画
 
-### 7.1 毛笔、颜料与绘画仿真
+### 7.1 仿真中的 agent 写画
+
+- **PRoC3S** · 2024 · CoRL 2024 · [arXiv 2406.05572](https://arxiv.org/abs/2406.05572) · [代码](https://github.com/Learning-and-Intelligent-Systems/proc3s)
+  - Trust the PRoC3S: Solving Long-Horizon Robotics Problems with LLMs and Constraint Satisfaction
+  - GPT-4 写程序组合 draw_line 技能、连续参数由约束采样求解；PyBullet 中 UR5 画星形、箭头、字母 M、包围图形
+- **MOPS** · 2025 · CoRL 2025 · [arXiv 2505.03725](https://arxiv.org/abs/2505.03725) · [项目](https://mops-tamp.github.io)
+  - Meta-Optimization and Program Search using Language Models for Task and Motion Planning
+  - LLM 生成轨迹优化程序、CMA-ES 调数值参数；PhysX 中 Panda 在倾斜白板上画星形、五边形、"#"
+- **Gym-Anything** · 2026 · 预印本 · [arXiv 2610.40565](https://arxiv.org/abs/2610.40565)
+  - Gym-Anything for Robotics: Scaling physical simulations with digital agents
+  - 编码 agent 生成仿真、任务与验证器；其中白板仿真带马克笔墨迹物理，任务含照画示意图与写字，前沿模型逐步控制人形机器人
+
+### 7.2 真机上的 agent 写画
+
+- **CaP** · 2022 · 预印本 · [arXiv 2209.07753](https://arxiv.org/abs/2209.07753) · [项目](https://code-as-policies.github.io)
+  - Code as Policies: Language Model Programs for Embodied Control
+  - LLM 写代码生成 2D 航点；白板画图域中 UR5e 按自然语言画、擦形状
+- **TrajGen** · 2023 · RA-L 2024 · [arXiv 2310.11604](https://arxiv.org/abs/2310.11604)
+  - Language Models as Zero-Shot Trajectory Generators
+  - GPT-4 不借助示例与运动基元直接生成稠密末端位姿；画圆、画五角星等复杂轨迹上，输出代码成功 60%，直接输出数值 10%
+- **Wonderful Team** · 2024 · TMLR 2025† · [arXiv 2407.19094](https://arxiv.org/abs/2407.19094) · [项目](https://wonderful-team-robotics.github.io)
+  - Wonderful Team: Zero-Shot Physical Task Planning with Visual LLMs
+  - 多 agent VLLM 生成并互检航点；真机在本子上画五角星成功 80%
+- **Companion** · 2026 · 预印本 · [arXiv 2603.05511](https://arxiv.org/abs/2603.05511)
+  - An Embodied Companion for Visual Storytelling
+  - Gemini 通过语音对话与函数调用（样条、圆、线段、排线）驱动平面绘图臂，每轮看画布后继续画
+- **Older-Adult Co-Drawing** · 2025 · 预印本 · [arXiv 2506.18711](https://arxiv.org/abs/2506.18711)
+  - LLM-enhanced Interactions in Human-Robot Collaborative Drawing with Older Adults
+  - GPT-4o 看画后从 SVG 草图库选内容、给建议；18 名老年人参与的共绘研究，以访谈分析为主
+- **CoBrush** · 2026 · IROS 2026 · [arXiv 2609.35476](https://arxiv.org/abs/2609.35476)
+  - CoBrush: A Hierarchical Planning Framework for Human-Robot Co-Painting
+  - VLM 做语义规划、网格选区与自我批评，StrokeDiff 生成笔触；Franka 持毛笔在丙烯画布上多轮共绘
+- **SketcherX** · 2024 · 预印本 · [arXiv 2409.15292](https://arxiv.org/abs/2409.15292)
+  - SketcherX: AI-Driven Interactive Robotic drawing with Diffusion model and Vectorization Techniques
+  - VLM 把人脸写成扩散模型提示词，生成图矢量化后由 KUKA 画肖像；开环
+- **GeminiPainter** · 2026 · 预印本 · [arXiv 2608.00829](https://arxiv.org/abs/2608.00829)
+  - GeminiPainter's sequence-formed pipeline comprised of perception, cognition, planning, and action stages
+  - Gemini 图像模型生成单线肖像，经轮廓提取与笔画排序后由协作臂在白板上执行；开环
+
+### 7.3 推理模型直接控制
+
+- **RURL** · 2026 · 预印本 · [arXiv 2611.18562](https://arxiv.org/abs/2611.18562)
+  - Training Reasoning Models in Simulation to Natively Use Real Robots
+  - 27B 推理模型只在仿真中用 RL 训练，每轮写思维链后输出末端位姿；真机零样本把《星夜》画成白板线稿，只有定性展示
+
+### 7.4 数字画布上的绘图 agent、基准与数据
+
+- **SketchAgent** · 2024 · CVPR 2025 · [arXiv 2411.17673](https://arxiv.org/abs/2411.17673) · [项目](https://sketch-agent.csail.mit.edu)
+  - SketchAgent: Language-Driven Sequential Sketch Generation
+  - 多模态 LLM 在编号网格上逐笔输出坐标画草图；BURGER 把它作为草图来源对比，CoBrush、Companion 引用
+- **Part-at-a-Time** · 2026 · 预印本 · [arXiv 2603.19500](https://arxiv.org/abs/2603.19500)
+  - Teaching an Agent to Sketch One Part at a Time
+  - VLM 经 SFT 与多轮过程奖励 RL，按部件逐个生成矢量草图；BURGER 把它作为草图来源对比
+- **EASEL** · 2026 · 预印本 · [arXiv 2608.25417](https://arxiv.org/abs/2608.25417)
+  - Paint What You See: Benchmarking Dexterous Visual Tool Use in Multimodal Agents
+  - 25 个模型逐笔输出笔刷参数、每笔后看画布；含手写任务，重建相似度停在 0.40–0.54
+- **PixelBench** · 2026 · 预印本 · [arXiv 2611.20628](https://arxiv.org/abs/2611.20628)
+  - PixelBench: Evaluating Language Models for Pixel-Art Creation
+  - 像素画 agent 基准；MLLM 评判与专业评审的一致性落在评审彼此之间的范围内
+- **VectorGym** · 2026 · EMNLP 2026 · [arXiv 2603.29852](https://arxiv.org/abs/2603.29852)
+  - VectorGym: A Multi-Task Benchmark for SVG Code Generation, Sketching and Editing
+  - SVG 生成、草图转 SVG 与编辑基准；VLM 评判在草图与文本类任务上与人工相关性较低
+- **RoboSVG** · 2025 · 预印本 · [arXiv 2510.22684](https://arxiv.org/abs/2510.22684)
+  - RoboSVG: A Unified Framework for Interactive SVG Generation with Multi-modal Guidance
+  - 多模态引导的 SVG 生成，附 100 万条面向机器人绘画的 SVG 数据集 RoboDraw；只评渲染图像，没有机器人执行
+
+## 8. 相邻工作：控制器不是 VLA / WAM，也不是 LLM / VLM agent
+
+### 8.1 毛笔、颜料与绘画仿真
 
 - **Robot Calligraphy POC** · 2019 · IROS 2020 · [arXiv 1911.08002](https://arxiv.org/abs/1911.08002)
   - Robot Calligraphy using Pseudospectral Optimal Control in Conjunction with a Novel Dynamic Brush Model
@@ -111,7 +179,7 @@
   - IMPASTO: Integrating Model-Based Planning with Learned Dynamics Models for Robotic Oil Painting Reproduction
   - 油画缺少可信仿真器，改为学习像素动力学模型 + MPC
 
-### 7.2 力 / 触觉书写
+### 8.2 力 / 触觉书写
 
 - **Membranes** · 2022 · CoRL 2022 · [arXiv 2209.13432](https://arxiv.org/abs/2209.13432)
   - Manipulation via Membranes: High-Resolution and Highly Deformable Tactile Sensing and Control
@@ -135,11 +203,8 @@
   - TacGooseBumps (TacGB): Retrofitting Normal-Only Tactile Sensors with Shear Encoding for Learning Contact-Rich Manipulation
   - 给只测法向力的触觉传感器加剪切编码；任务含白板画线
 
-### 7.3 VLM 规划 + 执行、数据与渲染
+### 8.3 数据与渲染
 
-- **CoBrush** · 2026 · IROS 2026 · [arXiv 2609.35476](https://arxiv.org/abs/2609.35476)
-  - CoBrush: A Hierarchical Planning Framework for Human-Robot Co-Painting
-  - 意图推断、空间定位与笔触控制分层的人机共绘；VLM 只做规划
 - **Handwritten Alphabet LfD** · 2026 · ICDL 2026 · [arXiv 2608.06221](https://arxiv.org/abs/2608.06221)
   - Robot Learning from Human Demonstrations: Handwritten Alphabet Trajectories and Human-Likeness Evaluation
   - 22 人、52 种大小写字母的 3,142 条手写示教数据集与类人度评测
@@ -147,7 +212,7 @@
   - Bridging Online and Offline Handwriting via Differentiable Physical Rendering
   - 用可微物理渲染连接笔迹轨迹与笔迹图像
 
-## 8. 易混淆：任务涉及笔、字母或草图，但不是写画
+## 9. 易混淆：任务涉及笔、字母、草图或轨迹，但不是写画
 
 - **RT-Sketch** · 2024 · 预印本 · [arXiv 2403.02709](https://arxiv.org/abs/2403.02709)
   - RT-Sketch: Goal-Conditioned Imitation Learning from Hand-Drawn Sketches
@@ -158,3 +223,9 @@
 - **GR-Dexter** · 2025 · 预印本 · [arXiv 2512.24210](https://arxiv.org/abs/2512.24210)
   - GR-Dexter Technical Report
   - 书法只出现在遥操作能力展示（Fig. 5）中，VLA 评测不含书写
+- **RT-Trajectory** · 2023 · 预印本 · [arXiv 2311.01977](https://arxiv.org/abs/2311.01977)
+  - RT-Trajectory: Robotic Task Generalization via Hindsight Trajectory Sketches
+  - 轨迹草图作为策略条件，草图可由人画、LLM 代码或图像生成得到；评测任务不含写画
+- **HAMSTER** · 2025 · 预印本 · [arXiv 2502.05485](https://arxiv.org/abs/2502.05485)
+  - HAMSTER: Hierarchical Action Models For Open-World Robot Manipulation
+  - 微调 VLM 预测 2D 路径，交给 3D 低层策略执行；评测任务不含写画
