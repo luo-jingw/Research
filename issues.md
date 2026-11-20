@@ -250,3 +250,106 @@ Area: vla-drawing-writing
 引用前核对 ICLR 2025 / 2026 论文集；对照 DreamZero 原图复核 Fig. 9；第二轮检索时用全文检索补查 "DrawTriangle-v1"、"DrawSVG-v1"、"TableTopFreeDraw" 的使用者。
 
 ## Resolution
+
+# ISSUE-007
+
+Status: open
+
+Area: vla-wam-robustness
+
+## Observation
+
+第一轮 vla-wam-robustness 综述（`topics/vla-wam-robustness/papers.md`、`survey.md`）中：部分发表处没能在一手页面确认，或与其他方向的 `papers.md` 不一致；部分数字只来自模型对 HTML 正文的摘录，没有逐字核对；若干论文原文内部前后不一致；检索召回有已知缺口，还有一些方法只在别人的表格中出现，arXiv 编号没有核实。
+
+## Impact
+
+引用标 † 的发表处、下列数字，或综述中"本轮没有找到"一类的结论之前，需要回到一手来源确认。"相机位姿漂移、冻结 VLA、无标签"组合缺失，以及"VLA 上没有只调 LN / RMSNorm 仿射的 TTA 报告"这两条结论依赖检索召回，可能偏强。
+
+## Evidence
+
+- **发表处没能在一手页面确认**：
+  - LIBERO-Plus (2510.13626)：CVPR 2026 只见于 cvpr.thecvf.com 的虚拟会场 poster 页，CVF 论文集 PDF 返回 403，没有打开。会议版标题为 "LIBERO-Plus: A Progressive Robustness Benchmark for Visual-Language-Action Models"。目录写作 CVPR 2026†。
+  - FOA (2404.01650)：comment 只写 "accepted by International Conference on Machine Learning"，没写年份；目录按 v1 年份写作 ICML 2024†。
+  - Adapt3R (2503.04877)：comment 中没有发表处，DART 的参考文献写作 CoRL，属于二手信息；目录按预印本列出。
+  - VLA-Arena (2512.22539)：页面上只有 ICML 模板的关键词，没有 comment；按预印本列出。
+  - VPP (2412.14803)：关键词写 ICML，录用没有确认；按预印本列出。
+  - PDF (2604.18107)：代码仓库名含 CVPR2026，comment 没列发表处；按预印本列出。
+  - WorldAgen (2609.08162)：检索片段称 AAAI；按预印本列出。
+  - DP (2303.04137)：没有读到 comment，正文自称是 RSS 会议论文的扩展版；按预印本列出。
+  - VersaCamVLA (2610.12451)：NeurIPS 2026 只在摘要级核实中记录。
+- **发表处与其他方向统一**：π0（RSS 2025）、π0.5（CoRL 2025）、OpenVLA（CoRL 2024）、OpenVLA-OFT（RSS 2025）、UVA（RSS 2025）、RDT-1B（ICLR 2025†）按 vla-drawing-writing、vla-fast-control 已有的记法写入本方向；本轮子方向只读到 arXiv comment 字段，没有重新核对这些发表处。
+- **仍不一致的发表处**：
+  - LIBERO-Plus (2510.13626)：data-distribution-generalization 记为预印本，本方向记为 CVPR 2026†
+- **抽查后已按原文更正的转述**：
+  - SALT (2610.07946)：几乎无效的条件是漂移"从第一次重规划就存在"，不是"从第一帧"；Table 1 中 BID 为 46.0 / 63.1，SALT 对最强基线的领先是 7.2 / 2.9 个点。
+  - TTT-VLA (2606.03127)：51.1 → 63.5 来自训练时加入的潜提示与状态定位代理任务（SG-LP），63.5 → 67.4 才是测试时训练的增量；代理专家在测试时也要用；原文没有说代理头"必须"在训练时加入，只说训练时同时优化动作目标与代理目标。
+  - TempoFit (2603.07647) Table IV：只在中间层启用 96.6，全部层（0–17）74.2，直接拼接 0.8，去掉范数保持 90.2。
+  - T³VF (2605.08215)：Camera 50.5 → 55.3、Light 67.8 → 72.4 只属于 "w/ Perturbed Train" 一组（在 LIBERO-Plus 上微调过的模型）；"w/o Perturbed Train" 一组为 Camera 39.2 → 41.5、Light 62.5 → 62.3。
+  - WAM-vs-VLA (2603.22078)：RoboTwin 2.0-Plus 的相机扰动只作用于头部相机；默认启用朝向扰动 C3（各轴 0–5°），球面位置扰动 C2（±10°、±10% 距离）默认关闭；Table 3 的相机一列只在 5 个模型中的 4 个最低，π0.5 的 Robot（27.6）低于其 Camera（45.6）。
+  - FTM (2512.02902)：视角幅度原文没有数值，"各档幅度即 Adapt3R App. C.1 与 DART Table 12 的数值"是推断；"一次演示"是每个任务一条、在同一批任务上测试。
+- **只来自模型摘录、没有逐字核对的数字**：
+  - SALT App. I（SmolVLA 32.5 对 32.9）。
+  - 基准与 WAM 比较一支（LIBERO-Plus、WAM-vs-VLA、ImageWAM、JAM、ZimaBlue、Phoenix、Colosseum V2、VLATest、Blackout-Freeze、VLA-Trace 等）的数字全部由 WebFetch 读 HTML 正文得到；只画在图里的数字没有读到数值，例如 Colosseum V2 的相机单项只在 Fig. 5 中。
+  - FTM 谱系一支中，用 curl 抽取原文逐字核对过的只有 FTM、Adapt3R（App. C.1、§4.3、Table 9、Table 11）、AnyCamVLA（Table I–III）、Cross-View AC（Table 1）、DART（Table 1、10、12，App. 0.C.2、0.B.2，§7）。其余由 WebFetch 读取；GS-VLA、WACO、Homeward 的页面超过 10 万字符，只读了前 10 万字符。
+  - Eva-VLA (2509.18953) Table 1：WebFetch 读到的表格是乱码，列对应关系是推断的。
+  - 只核实了摘要的条目：Layer Mystery、UVA、UWM、ScaleDP、RL²-VLA、SteerTrace、StairVLA、Knowing When to Stop、EVOLVE-VLA、RoboMonkey、TACO、Retrieve-then-Steer、Infer-Diagnose-Refine、T2-z、Self-Correcting Planning、Self-GAD、FAIL-Detect、DVAC、GeCO、τ0-WM、VistaBot、InfiNoVA、CAPO、T3R、PAIR、OVOA-VLA、VersaCamVLA、View Collapse、LIT、RAGu；WorldAgen 只读了 listing 摘要，RageVLA 只核实了 listing 标题。
+- **原文内部不一致**：
+  - FTM (2512.02902)：FLA 的训练步数 §4.3 写 2000，Table 7 写 1,500（decay 2,000）；Table 3 中 FTM 一行的 Libero-V 平均写作 90.5，四列均值约为 93.2；Table 1 中 FTM 的平均 v1 为 87.2、v2 为 87.1；§3.1 把 π0.5 写成自回归输出离散动作 token，附录 §11 写成 flow matching 动作专家。
+  - FTM (2512.02902)：Table 1 的 OpenVLA-OFT 行与 GeoAware-VLA Table I 的对应行逐项相同（均值 50.3 对 50.2），可能取自 GeoAware 但没有注明；Table 2 把 GeoAware 拆成 S/M/L，拆分来源没有说明。
+  - Cross-View AC (2608.06965)：ID 成功率正文 Table 1 为 94.2±0.8，arXiv 摘要为 95.0±0.8。
+  - GS-VLA (2608.19066)：参数量 4M 与正文中出现的 44M 不一致；Table 4 与 Table 1b 的零噪声行对不上。
+  - CRT (2602.01158)：高斯噪声下成功率 87% → 79%，正文却称"恢复"。
+  - TEMPO (2610.20318)：摘要称最高提升 80%，引言称 50%。
+  - T³VF (2605.08215)：Table 1 中 Robot 维度的 Δ 写作 +1.8，与 29.0 → 31.8 不符。
+  - VLA-Arena (2512.22539)：高斯噪声正文写方差 0.05，Table 14 写 σ²=0.085。
+  - COAST (2605.17144)：正文与 Table 1 的 MetaWorld 数字不一致。
+  - mimic-video (2512.15692)：正文默认 τv=1，Fig. 6 图注称中间噪声水平最好。
+  - ImageWAM (2606.19531)：App. §5.1.1 称动作 token "attend to the other tokens"，main 分支代码的掩码不让动作 token 看噪声目标帧 token。
+- **口径存疑或跨论文对不上**：
+  - π0 在 LIBERO-Plus 相机维度上：LIBERO-Plus Table 1 为 15.8，ImageWAM Table 3 照搬 LIBERO-Plus 写作 13.8。
+  - Homeward (2611.24455)：Table 3 中 π0.5 不校正为 76.5，Table 2 中"不校正"为 79.7，没有确认两表是否用同一模型、同一子集。
+  - LIBERO-Plus §3：只遮第三视角时为 43.6 / 43.0 / 67.3，正文没说分别对应哪个模型。
+  - WAM-vs-VLA：RoboTwin 2.0-Plus 的 C1（距离 0.85–1.0×）是否默认启用，没有确认；Table 3 中 "MOTUS" 是否就是 Motus (2512.13030)，没有确认。
+  - Phoenix (2611.24938)：Clean2Random 的定义只按名称理解，正文没有读到。
+  - TTT-VLA (2606.03127)：离线 buffer 约 800 / 800 / 2000，单位没标。
+- **四个子方向文件之间的不一致**：
+  - InfiNoVA (2609.27734)：一个子方向从 abs 页记为 "InfiNoVA: Infinite Novel View Augmentation for Viewpoint Invariant Robot Policies"，另一个从检索结果记为 "InfiNoVA: ∞ Novel View Augmentation for Viewpoint Invariant Robot Policies"；目录用前者，原标题可能用的是 ∞ 符号。
+  - VersaCamVLA (2610.12451)：做了摘要级核实的子方向只记了简称和 NeurIPS 2026；目录中的完整标题来自另一个子方向的检索结果（UNVERIFIED）。
+  - SCALE：一个子方向记为 DART 表中的 ICML 2026 方法、编号未核实；另一个在 listing 中记了 2602.04208；没有确认是同一篇。
+  - Self-Adaptive VLA (2609.30092)：一个子方向归为上下文或记忆式适应，另一个写作针对硬件漂移、训练时用预补偿的专家动作；两边都没有精读。
+  - Robust-WAM：一个子方向称它只在 CoRe-VLA Table 3 中出现、编号未核实；另一个从检索结果记为 2608.05903（UNVERIFIED）。
+  - "相机位姿漂移、冻结 VLA、无标签"组合：TTA 子方向一处称本轮没有找到，另一处称 T³VF 是唯一在 VLA 上对相机维度给出无标签 TTA 数字的工作。综述按后者写，并把"没有找到"限定在不预测未来图像的常规 VLA 上。
+  - π0.5 相机零样本的跨度：FTM 谱系子方向的要点写"16.8 到 76.5"，但同一文件的口径表里还有 9.3（GS-VLA libero_10）和 11.3（DART Large），另一个子方向记了 78.4（ZimaBlue）；综述按协议逐项列出，不写总跨度。
+  - VLA-Trace (2605.30117) 标题中 "through" 的大小写、MI-Steering (2509.00328) 标题的大小写，两个子方向的记录不同；目录分别取已核实的一方。
+- **只在别人表格中出现、arXiv 编号没有核实，没有列入目录**：
+  - RETAIN（DART 标为 ICLR 2026）、SCALE（DART 标为 ICML 2026）
+  - Anchor-Align、GAM、AVA-VLA、SRPO、Robust-WAM（CoRe-VLA Table 3）
+  - TBD-VLA、CycleVLA（WACO Table VII）
+  - Spatial Forcing（WARP-VLA Table I）
+  - Evo-0（GeoAware-VLA Table I）
+  - 各文表格里被评测、本轮没有单独核实的模型：X-VLA、UniVLA、WorldVLA、NORA、RIPT-VLA、HoloBrain0-GD、VLA-JEPA、MOTUS、InternVLA-A1.5、ABot-M0.5、OpenWAM-α、InternW0-Δ、Qwen-RobotManip-Context、ACoT-VLA、GR00T N1.7、Mantis、LDA-1B、QwenPi / QwenWPI
+- **发现但没有展开（只读了标题、listing 或摘要），没有列入目录**：
+  - 基准：LIBERO-VPro (2609.24350)、RoboCasa-Shift (2610.27861)、LIBERO-Occ (2606.10862)
+  - 子方向只核实了摘要、没有记完整标题：X-World (2610.34105，LIBERO-Plus 未适应 76.5)、MVUCF (2608.01826，GR00T-N1.6 上 LIBERO-Plus +22.4)、MAP-VLA (2511.09516，冻结 VLA 上用于记忆的软提示)
+  - 训练侧（标题来自检索结果，UNVERIFIED）：SG-WAM (2608.01397)、E0 (2511.21542)、Flatness Preserves Instruction Following in Vision-Language-Action Models (2606.23641)、Stable Language Guidance for Vision–Language–Action Models (2601.04052)、Enhancing Generalization in Vision–Language–Action Models by Preserving Pretrained Representations (2509.11417)、Uncovering Vulnerability of Vision-Language-Action Models under Joint-Level Physical Faults (2606.10501)
+  - 测试时与部署期适应：Risk-Controlled Test-Time Adaptation for Vision-Language-Action Models (2611.26438)、Verify, Act, Distill (2610.14885)、RecastVLA (2609.32155)、Self-Adaptive VLA for Robust Robot Deployment (2609.30092)、Taming VLAs under Robot Execution Errors (2609.37334)、Scouting the Dynamics Gap (2609.36107)、AdaPower (2512.03538)、RA-VLA (2608.25585)、GUARD (2611.10343)、PriGo (2607.07076)、ADPro (2508.06266)、UMI-on-Air (2510.02614)、GPC (2502.00622)、VLA Knows Its Limits (2602.21445)、SCALE (2602.04208)、RoboHarness (2603.24060)
+  - VLN 上的 TTA：Asking Less, Adapting Better (2610.30643)、Credit-Guided Policy Improvement for Test-time Adaptive VLN (2609.37591)
+  - 注入与引导：VLA-Cache (2502.02175)、SR-VLA (2611.22356)、Learning What to Say to Your VLA (2606.12299)、Embodied Interpretability (2605.00321)、From Recovery to Drop-off (2608.08904)、CAC-VLA (2607.04816)
+  - WAM 结构：AWAM (2610.23396)、Flex-π (2608.10860，标题已核实，内容未读)
+  - 其他：FAVR (2611.20971)、RoVi-Aug (2409.03403)、X-Sim (2505.07096)
+- **召回缺口**：
+  - TTA 一支的 arXiv 站内检索按时间倒序，listing 被截断：`test-time adaptation vision-language-action` 共 97 条看了约 90 条，`test-time training robot policy` 共 332 条只看了前约 37 条。2023–2025 年的条目可能漏检。
+  - WebSearch 额度有限，只用于发现论文；FTM 谱系、基准、TTA 三个子方向分别用了 4、6、3 次。
+  - 只读了摘要的条目没有读正文，其中的结论和数字只到摘要层面。
+  - ImageWAM 的代码结论只基于 main 分支（2026-11-20 读取）；π0 的结构结论来自论文正文与附录，没有读代码。
+
+## Hypotheses
+
+- LIBERO-Plus 相机维度上同一模型的数字分散，可能部分来自 WACO 指出的"扰动参数泄漏进提示词"（WACO §IV-A），以及各文是否用公开权重、是否重跑。
+- InfiNoVA 的标题差异可能只是 ∞ 符号在 abs 页上的转写方式不同。
+
+## Next Experiment
+
+引用前打开 CVPR 2026 论文集确认 LIBERO-Plus 的发表处；用 curl 或 pdftotext 逐字核对 WebFetch 得到的关键数字，优先 WAM-vs-VLA Table 3 / 4、Homeward Table 2 / 3、SALT App. I、Eva-VLA Table 1；第二轮检索补查 2023–2025 年的策略侧 TTA，并核实只在别人表格中出现的方法的 arXiv 编号。
+
+## Resolution
