@@ -462,3 +462,113 @@ Area: vla-drawing-writing
 ## Promotion Condition
 
 可运行 BURGER 或 ManiSkill3 绘图环境，并有一个可以接受轨迹草图或笔画条件的 VLA（或可在 BURGER 数据上加入此条件后微调）。
+
+# OPT-014
+
+Status: open
+
+Area: robot-painting-reproduction
+
+## Observation
+
+- 机器人素描的明暗有四种机制：排线或线段密度、点画或 TSP 连续线、遍历覆盖、石墨受力。只有 Lu-Lam-Yam Hatching 和遍历控制在回路里有定量的目标—画面度量；机器人素描论文很少报告实物画与目标图之间的图像指标（`topics/robot-painting-reproduction/survey.md` §3）。
+- 石墨模型的状态是纸面高度场加逐像素的石墨累积，沉积由压力、笔尖形状和硬度决定（Sousa-Buchanan，survey §6.1）；实测铅笔在 2–16 N 之间只能稳定画出约 4 级灰（Piktor-o-bot，survey §3）。
+- 线稿指标中 IoU 对局部错位极敏感，Rough Sketch Bench 选用 Chamfer；画家之间约 75% 的线条像素落在彼此 1 mm 内（Cole 2008，survey §7）。
+- 没有机器人素描临摹的公共基准（survey §0）。
+
+## Opportunity
+
+在 VlaDrawingWriting 的 UR3 / MuJoCo 仿真中加一个素描临摹任务：
+
+- 画布：把二值墨迹掩码换成逐像素灰度累积，按压深度决定笔印大小和沉积量，设饱和上限，可选纸纹；参照 Sousa-Buchanan 的状态，以及 Spline-FRIDA 中粗细、深浅随笔高变化的形式；
+- 目标图到笔画：线稿前端（FDoG 或 Informative Drawings），矢量化并排序；明暗用闭环排线（Lu-Lam-Yam Hatching，仿真画布直接当相机图像）或 TSP 连续线；
+- 评测：线稿的 Chamfer 距离与 1 mm 容差的精确率和召回率，整图的 LPIPS 或 DreamSim，以及色调分级误差；
+- 目标图作为 VLA 或模仿学习策略的条件输入。
+
+## Expected Mechanism
+
+假设：
+- 灰度累积画布让明暗由压力和重复产生，比二值掩码更接近铅笔，规划器也能在仿真中闭环排线；
+- 把线稿和明暗分开评测，比单一 IoU 更能区分轮廓错误与色调错误。
+
+## Required Evidence
+
+- 画布：单笔在不同按压深度和重复次数下的灰度曲线，与 Piktor-o-bot 的约 4 级灰、Sousa-Buchanan 的饱和形态对照；
+- 任务：一组肖像与静物目标图在理想跟踪和机械臂上的 Chamfer、LPIPS 或 DreamSim、色调误差、笔画数与用时；
+- 闭环排线与开环排线的对比。
+
+## Promotion Condition
+
+VlaDrawingWriting 把素描临摹定为下一个计划的目标。
+
+# OPT-015
+
+Status: open
+
+Area: robot-painting-reproduction
+
+## Observation
+
+- 神经画家给每笔一个自由 RGB，经典 SBR 从目标图取色；机器人系统用 4–24 种预混颜料，FRIDA 和 Spline-FRIDA 在优化过程中离散颜色，FRIDA 称事后离散可能毁掉画面内容（`topics/robot-painting-reproduction/survey.md` §4、§5.2）。
+- 画布模型：IMPaSTo 每格保存颜料浓度与体积；Chu Detail-Preserving 用快照拾取避免涂抹变糊；Mixbox 在 RGB 输入下给出类似 Kubelka–Munk 的混合；机器人侧学到的笔画模型都不建模湿画和高度（survey §6）。
+- 机器人可执行性：Learning to Paint 不受约束的笔画在机器人上与仿真差别极大，CML 因此约束宽度、透明度和长度（survey §5.1）。
+- 油画临摹的现有评测协议是加权 ℓ1 加 LPIPS（IMPASTO，survey §7）。
+
+## Opportunity
+
+在 VlaDrawingWriting 的 UR3 仿真中加一个油画临摹任务：
+
+- 画布：逐像素 RGB 的不透明覆盖，可选湿层和颜料高度；每笔颜色直接指定，分自由 RGB 和 k 色调色盘两种设置；可选 Mixbox 式的画布湿画混合和 Chu 式快照拾取；
+- 笔画分解：Hertzmann98 的分层由粗到细，笔画限制在机器人笔印能画出的宽度和长度内（CML 式约束）；或用 SNP、Paint Transformer 的参数化，再投影到笔印模型；
+- 排序：由浅到深、同色连续（FRIDA、Intelli-Paint）；
+- 回路：分批执行后用仿真画布重规划（FRIDA 式）；
+- 评测：加权 ℓ1、LPIPS、DreamSim 对笔画数的曲线。
+
+## Expected Mechanism
+
+假设：
+- 直接指定颜色时，误差主要来自笔印形状和覆盖顺序，而不是调色；
+- 在优化循环中离散调色盘，保真度高于事后离散；
+- 画布湿画混合和颜料高度对终图 LPIPS 影响不大，但会改变涂抹区域。
+
+## Required Evidence
+
+- 自由 RGB、12 色、4 色三种颜色设置下，理想跟踪与机械臂上的加权 ℓ1、LPIPS、DreamSim 对笔画数的曲线；
+- 有无画布湿画混合的对比；
+- 分批重规划与开环执行的对比。
+
+## Promotion Condition
+
+VlaDrawingWriting 把油画临摹定为下一个计划的目标。
+
+# OPT-016
+
+Status: open
+
+Area: robot-painting-reproduction
+
+## Observation
+
+- 公开数据中没有"机器人指令笔画—实际笔迹"成对数据：FRIDA、Spline-FRIDA、IMPASTO 都采集了，但没有发布（`topics/robot-painting-reproduction/survey.md` §8.2）。
+- 没有带笔画矢量或笔刷轨迹的人类油画数据；作画过程只有视频，最大的 Loomis Painter 因许可不公开（survey §8.1）。
+- 过程指标已经存在：Inverse Painting 的 DDC 和 Loomis Painter 的 PDP 评的是中间画布到目标的距离曲线（survey §7）。
+
+## Opportunity
+
+用 VlaDrawingWriting 的仿真批量生成完整记录：目标图、规划的笔画与颜色、执行轨迹、每步画布和终画。这些记录既作为 VLA 示教，也作为 FRIDA、IMPASTO 式笔画模型的训练数据；策略评测同时报告终图指标和过程曲线。
+
+## Expected Mechanism
+
+假设：
+- 仿真记录的每步画布和指令足以训练笔画模型，也能让策略学到"看当前画布与目标的差异再下笔"的闭环行为；
+- 过程指标能区分终图相近、过程不同的策略。
+
+## Required Evidence
+
+- 数据规模与生成速度；
+- 用仿真数据训练的笔画模型在留出集上的 L1；
+- VLA 在留出目标图上的终图指标与过程曲线，并与开环规划器对比。
+
+## Promotion Condition
+
+OPT-014 或 OPT-015 的临摹任务可以在仿真中运行。

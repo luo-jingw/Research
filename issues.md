@@ -353,3 +353,53 @@ Area: vla-wam-robustness
 引用前打开 CVPR 2026 论文集确认 LIBERO-Plus 的发表处；用 curl 或 pdftotext 逐字核对 WebFetch 得到的关键数字，优先 WAM-vs-VLA Table 3 / 4、Homeward Table 2 / 3、SALT App. I、Eva-VLA Table 1；第二轮检索补查 2023–2025 年的策略侧 TTA，并核实只在别人表格中出现的方法的 arXiv 编号。
 
 ## Resolution
+
+# ISSUE-008
+
+Status: open
+
+Area: robot-painting-reproduction
+
+## Observation
+
+第一轮 robot-painting-reproduction 综述（`topics/robot-painting-reproduction/papers.md`、`survey.md`）中：一部分条目只读到摘要或二手描述，一部分数据集的规模、许可或是否公开没有在一手页面确认，两篇论文对 DiffVG 的说法相互矛盾，几项"没有找到"的结论依赖检索召回。
+
+## Impact
+
+引用标 † 的条目、下列只读到摘要的方法细节，或"没有公开的指令—笔迹成对数据""2010 年以后没有基于物理的石墨沉积模型"这类结论之前，需要回到一手来源确认。
+
+## Evidence
+
+- **方法细节只来自摘要或他人转述**：
+  - Paul (C&G 2013)：全文不可得，方法来自 Goldsmiths 摘要和 drozBot 的相关工作一节。
+  - O'Dowd Pencil、Lau IBVS、Adamik GA Pencil、Calinon Portrait、Pixelor、e-David 2015、Karimov 2019：只读到摘要。
+  - Karimov 2023：只确认了 Crossref 元数据，摘要和正文都不可得。
+  - Busker Watercolour：内容来自 e-David 2022 的综述段落。
+  - Van Haevre Pastel、dAb、Fast Paint Texture、Okaichi Knife、Takagi Colored Pencil：内容来自 IMPaSTo、Chu Detail-Preserving 或 Rudolf Crayon 的相关工作一节。
+  - Wu Oil-GAN、NBE：只读到摘要。
+- **元数据不全**：
+  - Pixelor：Crossref 只列出 "Pixelor"，目录中的副标题没有核实。
+  - Van Haevre Pastel：只有短标题 "From dust till drawn"。
+  - Piktor-o-bot：IMEKO 2024 会议版的发表处只见于论文页眉；期刊版（Measurement: Sensors 38, 2025）经 Crossref 确认。
+  - Paints-Undo：只是 GitHub 项目，没有论文，训练数据来源未说明。
+  - APDrawingGAN：CVF 页码 10743–10752 与 IEEE 记录 10735–10744 不同；没有找到 arXiv 版本。General Virtual Sketching 同样没有找到 arXiv 版本。
+- **数据集信息未核实**：
+  - Sketchy：项目主页 TLS 证书不匹配，规模、笔画时间格式和许可没有读到。
+  - CUFS / CUHK Face Sketch：官方页返回 HTTP 500；TU-Berlin 素描数据集官方页返回 404；两者没有列入目录。
+  - RealBrush Ink：论文称"计划公开"，是否已公开没有确认。
+  - PPJudge：数据的介质和是否发布没有说明。
+  - Inverse Painting、Timecraft：页面上没有说明数据是否发布。
+- **未能核实、没有列入目录**：
+  - CloudPainter：没有找到同行评审论文，只有作者网站和报道。
+  - "Feedback-guided stroke placement for a painting machine"（Deussen 等，CAe 2012）：IMPASTO 的参考文献引用了它，Crossref 没有记录。
+  - "Dynamic Region Filling for Robotic Artistic Painting using Visual Feedback"（Eurographics 2026 poster）：页面返回 403。
+- **原文之间的矛盾**：
+  - DiffVG 的线宽是否可微：Spline-FRIDA §III-B 称 DiffVG 对粗细不可微、表达不了深浅衰减；DiffVG §1 把线宽列为可微参数。综述只陈述两边的原文说法。
+- **抽查后按原文写入的细节**：
+  - IMPASTO：调色盘有 24 格预混颜料，但实验只按目标画使用其中一部分；学到的动力学模型把颜色按灰度处理。
+  - Hertzmann98 的停笔条件：子方向的转述没有对照原文核实，综述中删去了这一句。
+- **召回缺口**：
+  - 2010 年以后基于物理的石墨或炭笔沉积模型：本轮没有找到；ACM DL、IEEE Xplore、Springer 和 dblp 拒绝自动访问，召回可能不全。
+  - 公开的指令—笔迹成对数据、带笔画矢量的人类油画数据：本轮没有找到。
+  - 发现阶段看到但没有读的条目：Multi-Pen Robust Robotic 3D Drawing（arXiv 2009.14501）、Robot Learning to Paint from Demonstrations（IROS 2022）、ShadowPainter（JIRS 2022）、StrokeDiff（arXiv 2603.01103）、PaintCopilot（arXiv 2605.20941）。
+- **与其他方向的发表处更正**：FRIDA 为 ICRA 2023、Spline-FRIDA 为 IEEE RA-L 2025（Crossref），已同步改正 `topics/vla-drawing-writing/papers.md` 中原先的"预印本"。

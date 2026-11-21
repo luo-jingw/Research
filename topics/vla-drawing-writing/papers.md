@@ -160,10 +160,10 @@
 - **Robot Calligraphy POC** · 2019 · IROS 2020 · [arXiv 1911.08002](https://arxiv.org/abs/1911.08002)
   - Robot Calligraphy using Pseudospectral Optimal Control in Conjunction with a Novel Dynamic Brush Model
   - 动态虚拟毛笔模型 + 轨迹优化写汉字
-- **FRIDA** · 2022 · 预印本 · [arXiv 2210.00664](https://arxiv.org/abs/2210.00664)
+- **FRIDA** · 2022 · ICRA 2023 · [arXiv 2210.00664](https://arxiv.org/abs/2210.00664)
   - FRIDA: A Collaborative Robot Painter with a Differentiable, Real2Sim2Real Planning Environment
   - 可微绘画仿真（real2sim2real）+ 规划，按语言或图像作画
-- **Spline-FRIDA** · 2024 · 预印本 · [arXiv 2412.00597](https://arxiv.org/abs/2412.00597)
+- **Spline-FRIDA** · 2024 · IEEE RA-L 2025 · [arXiv 2412.00597](https://arxiv.org/abs/2412.00597)
   - Spline-FRIDA: Towards Diverse, Humanlike Robot Painting Styles with a Sample-Efficient, Differentiable Brush Stroke Model
   - 用动作捕捉的艺术家笔触训练可微笔触动力学模型
 - **From Scratch to Sketch** · 2022 · ICRA 2022 · [arXiv 2208.04833](https://arxiv.org/abs/2208.04833)
