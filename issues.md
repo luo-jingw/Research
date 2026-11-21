@@ -403,3 +403,11 @@ Area: robot-painting-reproduction
   - 公开的指令—笔迹成对数据、带笔画矢量的人类油画数据：本轮没有找到。
   - 发现阶段看到但没有读的条目：Multi-Pen Robust Robotic 3D Drawing（arXiv 2009.14501）、Robot Learning to Paint from Demonstrations（IROS 2022）、ShadowPainter（JIRS 2022）、StrokeDiff（arXiv 2603.01103）、PaintCopilot（arXiv 2605.20941）。
 - **与其他方向的发表处更正**：FRIDA 为 ICRA 2023、Spline-FRIDA 为 IEEE RA-L 2025（Crossref），已同步改正 `topics/vla-drawing-writing/papers.md` 中原先的"预印本"。
+- **2026-11-21 排线方向增补（§2.5、§8.3）**：
+  - 内容只来自转述：Li-Huang03（Lu-Xu-Jia Pencil 等转述）；Stevens 1981 与 Tchalenko 2009 的结论只见于他人引用，没有列入目录。
+  - Yamamoto04：作者列表在 Crossref 与茅等 2014 年综述之间不一致。
+  - 只读到摘要、没有列入目录：Kim 2008 Line-art illustration of dynamic and specular surfaces、Sweet-Ware 2004、Chen 2021 Autocomplete Repetitive Stroking；Singh-Schaefer 2010 Suggestive Hatching 与 Deussen 1999 的方向规则只见于转述。
+  - 数据可得性：Berger13 论文称提供数据，现在找不到下载；SmartShadow 论文称将公开，没有找到仓库；Tracing vs Freehand 论文中的 hatching 标签不在发布文件里；CUFS 主页返回 HTTP 500，CUFS 与 CUFSF 都没写许可。
+  - Guptill76 只读到网上的用户上传本，目录中不给链接；Betty Edwards、Bert Dodson 的教材没有找到合法副本，没有引用。
+  - 交叉层角度：Sullivan22 主张直角最中性，朱晓华-于才晟24 示范逐层"稍微变换点角度"，Guptill22 建议铅笔画少用交叉；综述只陈述各自原文。
+  - OpenSketch 的方向粗测没有按折返点切分笔画，不能作为人类排线规律的结论。

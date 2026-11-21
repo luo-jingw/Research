@@ -82,6 +82,102 @@
   - StippleDiffusion: Capacity-Constrained Stippling using Controlled Diffusion
   - 以图像为容量约束的扩散点画采样器
 
+### 1.5 排线方向场
+
+- **W&S94** · 1994 · SIGGRAPH 94 · [DOI](https://doi.org/10.1145/192161.192184)
+  - Computer-Generated Pen-and-Ink Illustration
+  - 每个面上带优先级的笔触纹理，按色调先加竖线、再加横线、再加斜线（§2.3）；方向贴在面上，不是屏幕坐标
+- **W&S96** · 1996 · SIGGRAPH 96 · [DOI](https://doi.org/10.1145/237170.237287)
+  - Rendering Parametric Surfaces in Pen and Ink
+  - 参数曲面上沿等参线排线，暗部加第二个方向（§3–4）；依赖全局参数化
+- **Salisbury97** · 1997 · SIGGRAPH 97 · [DOI](https://doi.org/10.1145/258734.258890)
+  - Orientable Textures for Image-Based Pen-and-Ink Illustration
+  - 用户在照片上画方向场（梳理、两条曲线间插值、源点发散）；笔触在方向急转处截断，不跨物体边界（§2、§3.1）
+- **Ostromoukhov99** · 1999 · SIGGRAPH 99 · [DOI](https://doi.org/10.1145/311535.311604)
+  - Digital Facial Engraving
+  - 沿五官边界手绘 Coons 片网格，5–10 层变形网格叠加出交叉雕版线（§2.2）
+- **HZ00** · 2000 · SIGGRAPH 2000 · [DOI](https://doi.org/10.1145/344779.345074) · [项目](https://mrl.cs.nyu.edu/publications/illustrating-smooth/)
+  - Illustrating Smooth Surfaces
+  - 近柱面处沿主曲率方向，其余区域优化 cross field；排线近乎直线，过长或偏转过大就截断；高光不排线、中间调单向、暗部交叉（§5–6）
+- **Praun01** · 2001 · SIGGRAPH 2001 · [DOI](https://doi.org/10.1145/383259.383328)
+  - Real-Time Hatching
+  - 色调艺术图（TAM）按暗度先放一个方向、再加垂直方向（§4）；方向取平滑后的主曲率，部分模型手工指定（§6–7）
+- **Mao02** · 2002 · 芸術科学会論文誌 1(3) · [DOI](https://doi.org/10.3756/artsci.1.147)
+  - Automatic Generation of Pencil Drawings Using LIC
+  - 按亮度分区，每区沿一个方向做 LIC 铅笔调子；方向随机，或在纹理有主方向时取它（§3.3–3.4）
+- **Li-Huang03**† · 2003 · GRAPHITE 2003 · [DOI](https://doi.org/10.1145/604471.604498)
+  - A feature-based pencil drawing method
+  - 用区域矩求局部主轴作笔触方向；内容来自 Lu-Xu-Jia Pencil 等的转述
+- **Zander04** · 2004 · Computer Graphics Forum 23(3) · [DOI](https://doi.org/10.1111/j.1467-8659.2004.00773.x)
+  - High Quality Hatching
+  - 平滑主曲率场上积分排线；交叉层把整个方向场旋转任意角度后叠加（§4.3）
+- **Hays-Essa04** · 2004 · NPAR 2004 · [DOI](https://doi.org/10.1145/987657.987676)
+  - Image and video based painterly animation
+  - 只取最强梯度处的少数基点，用 RBF 插值出全图笔触方向：物体边缘的梯度决定内部笔触方向
+- **Yamamoto04**† · 2004 · CGIV 2004 · [DOI](https://doi.org/10.1109/CGIV.2004.1323994)
+  - Enhanced LIC pencil filter
+  - 按亮度区间分层生成笔触图后叠加；作者列表在 Crossref 与茅等 2014 年综述之间不一致
+- **FBIA** · 2009 · IEEE TVCG 15(1) · [DOI](https://doi.org/10.1109/TVCG.2008.81)
+  - Flow-Based Image Abstraction
+  - 边缘切向流（ETF）：垂直于梯度的切向经双边式加权平滑迭代 2–3 次（§2）；CLD / FDoG 的方向场部分
+- **Kalogerakis12** · 2012 · ACM TOG 31(1) · [DOI](https://doi.org/10.1145/2077341.2077342) · [项目](https://kalo-ai.github.io/papers/MLHatching/index.html)
+  - Learning Hatching for Pen-and-Ink Illustration of Surfaces
+  - 从 9 幅画家排线插图学习方向：没有一条局部几何规则能解释全部笔触，先分区、每区选特征；主曲率方向和局部主轴最常被选中；交叉方向单独回归，不要求垂直
+- **Yang-Min12** · 2012 · KSII TIIS 6(12) · [DOI](https://doi.org/10.3837/tiis.2012.12.015)
+  - Simulation of Color Pencil Drawing using LIC
+  - 特征线附近沿切向流，区域内沿到特征线的等距线传播并按 δ = 30°/45° 量化，背景用单一方向（§4.2）
+- **Gerl-Isenberg13** · 2013 · Computers & Graphics 37(1–2) · [DOI](https://doi.org/10.1016/j.cag.2012.11.003)
+  - Interactive example-based hatching
+  - 按 patch 学习笔触相对曲率方向的夹角；逐点学习不稳；交叉层角度由用户控制（§7–8）
+- **Tong21** · 2020 · AAAI 2021 · [arXiv 2012.09004](https://arxiv.org/abs/2012.09004)
+  - Sketch Generation with Drawing Process Guided by Vector Flow and Grayscale
+  - ETF 量化为 10 个方向区，逐笔排线并可回放绘制过程（§4.2、§4.5）
+- **Fang-Han23** · 2023 · 预印本 · [arXiv 2307.07540](https://arxiv.org/abs/2307.07540)
+  - Flow-Guided Controllable Line Drawing Generation
+  - 网络回归 Kang 法算出的 ETF，学到的不是画家的方向
+
+### 1.6 排线方向的感知研究与绘画教学
+
+- **Todd-Reichel90** · 1990 · J. Exp. Psychol.: Human Perception and Performance 16(3) · [DOI](https://doi.org/10.1037/0096-1523.16.3.665)
+  - Visual perception of smoothly curved surfaces from double-projected contour patterns
+  - 几何结构不同的多种线图案都能产生强烈的三维印象，比计算模型的假设宽松得多
+- **Interrante97** · 1997 · SIGGRAPH 97 · [DOI](https://doi.org/10.1145/258734.258796)
+  - Illustrating surface shape in volume data via principal direction-driven 3D line integral convolution
+  - 沿主方向的笔触表现表面"流向"；引用插画教材关于线条方向的论述；没有用户实验
+- **Mamassian-Landy98** · 1998 · Vision Research 38(18) · [DOI](https://doi.org/10.1016/s0042-6989(97)00438-0)
+  - Observer biases in the 3D interpretation of line drawings
+  - 拟合观察者数据需要"表面线沿主曲率线"的先验，另有偏好凸面和从上方看
+- **Li-Zaidi00** · 2000 · Vision Research 40(2) · [DOI](https://doi.org/10.1016/s0042-6989(99)00169-8)
+  - Perception of 3D shape from texture is based on patterns of oriented energy
+  - 只有沿最大曲率线方向的取向能量变化，才能让人看出正确的深度顺序
+- **Girshick00** · 2000 · NPAR 2000 · [DOI](https://doi.org/10.1145/340916.340922)
+  - Line direction matters: an argument for the use of principal directions in 3D line drawings
+  - 主张线条沿主方向；只有随机、均匀与主方向的对比图，没有用户实验
+- **Interrante-Kim01** · 2001 · Proc. SPIE 4299 · [DOI](https://doi.org/10.1117/12.429537)
+  - Investigating the effect of texture orientation on the perception of 3D shape
+  - 沿第一主方向或各向同性的纹理，优于方向均匀或与几何无关的各向异性纹理
+- **Kim03** · 2003 · Proc. SPIE 5007 · [DOI](https://doi.org/10.1117/12.477368)
+  - Showing shape with texture: two directions seem better than one
+  - 5 名被试；双主方向网格最好，单向线纹理显著更差
+- **Kim04** · 2004 · IEEE TVCG 10(4) · [DOI](https://doi.org/10.1109/TVCG.2004.5)
+  - Conveying shape with texture: experimental investigations of texture's effects on shape categorization judgments
+  - 两组各 8 人；双主方向网格整体最好，单向纹理常把椭球面和马鞍面误判为柱面，斜向图案特别妨碍柱面判断
+- **Sullivan22** · 1922 · Chapman & Hall（公版） · [archive.org](https://archive.org/details/lineartstudy00sulluoft)
+  - Line: an Art Study
+  - 塑形的线组"follow the form"，四种方案：垂直于光线的同心弧、平行于光线、水平截面、垂直于长轴的截面；线组与外轮廓近乎平行显得扁平；交叉以直角最中性
+- **Guptill22** · 1922 · 公版 · [archive.org](https://archive.org/details/sketchingandren00guptgoog)
+  - Sketching and Rendering in Pencil
+  - 铅笔：线的长度要有变化，避免太多等长同向的线；交叉排线通常少用，主要用于阴影和背景；阴影线的斜向暗示光的方向；先打轮廓再按光向上明暗
+- **Guptill76** · 1976 · Watson-Guptill
+  - Rendering in Pen and Ink
+  - 线条顺着物面走并强调透视汇聚；分块铺调时接缝靠长度和方向的变化掩盖；频繁换方向显得躁动，完全不变显得单调
+- **朱晓华-于才晟24** · 2024 · 清华大学出版社 · [样章](https://www.tup.tsinghua.edu.cn/upload/books/yz/101201-01.pdf)
+  - 素描基础训练（第二版）
+  - 先用长直线画出形体结构；正方体暗部第一遍用倾斜的平行线条，第二遍"用稍微变换点角度的线条，从明暗交界线的地方开始铺"，再"继续变换不同的角度叠加"
+- **张恒国16** · 2016 · 清华大学出版社 · [样章](https://www.tup.tsinghua.edu.cn/upload/books/yz/063996-01.pdf)
+  - 素描基础教程——结构素描
+  - 步骤：大体轮廓 → 外形轮廓加结构线和阴影轮廓 → 沿着结构线加入明暗色调
+
 ## 2. 机器人素描与线描临摹
 
 - **Calinon Portrait** · 2005 · Humanoids 2005 · [DOI](https://doi.org/10.1109/ichr.2005.1573562)
@@ -431,13 +527,38 @@
   - 1 万幅凭记忆画的 MS-COCO 场景素描，带时空数据和描述；CC BY-NC 4.0
 - **OpenSketch** · 2019 · ACM TOG 2019 · [项目](https://repo-sam.inria.fr/d3/OpenSketch)
   - OpenSketch: A Richly-Annotated Dataset of Product Design Sketches
-  - 400 多幅产品设计素描，数位板记录笔迹、压力和时间，每幅 200–400 笔
+  - 400 多幅产品设计素描，数位板记录笔迹、压力和时间，每幅 200–400 笔；第一视角 214 幅有逐笔线型标注，其中 22 = hatching、25 = shadow construction，配准 3D 模型和相机；CC0
 - **SEVA** · 2023 · NeurIPS 2023 D&B · [arXiv 2312.03035](https://arxiv.org/abs/2312.03035)
   - SEVA: Leveraging sketches to evaluate alignment between human and machine visual abstraction
   - 限时（4–32 秒）素描 8.98 万幅，测量模型与人类在素描识别上的一致性
 - **Cole 2008** · 2008 · ACM TOG 2008 · [项目](https://gfx.cs.princeton.edu/proj/ld3d)
   - Where Do People Draw Lines?
   - 29 位画家对三维模型的 208 幅铅笔线稿；约 75% 的线条像素落在其他画家线条 1 mm 内
+
+- **Tracing vs Freehand** · 2021 · ACM TOG 40(4) · [数据](https://github.com/zachzeyuwang/tracing-vs-freehand)
+  - Tracing Versus Freehand for Evaluating Computer-Generated Drawings
+  - 110 人对 100 个提示画 1,498 幅（描摹 1,210、徒手 288），矢量笔画带时间、压力；不限笔画类型；论文标注过含 hatching 的六类笔画，发布文件中未见这些标签；CC BY-NC-SA 4.0
+- **Berger13**† · 2013 · ACM TOG 32(4)
+  - Style and Abstraction in Portrait Sketching
+  - 7 位艺术家对 24 张人脸照片画 672 幅，笔画带倾角和压力；明暗笔画按规则自动分出；论文称提供数据，现在找不到下载
+- **DifferSketching** · 2022 · ACM TOG 41(6) · [项目](https://chufengxiao.github.io/DifferSketching/)
+  - DifferSketching
+  - 108 人画 136 个 3D 物体的 3,620 幅，带时序和三级配准；要求忽略光影，没有排线；限非商业研究
+- **ShadeSketch** · 2020 · CVPR 2020 · [数据](https://github.com/qyzdao/ShadeSketch)
+  - Learning to Shadow Hand-drawn Sketches
+  - 1,160 对线稿与阴影，按光向分类；阴影是平涂区域，不是排线；CC BY-NC 4.0
+- **SmartShadow**† · 2021 · ICCV 2021
+  - SmartShadow: Artistic Shadow Drawing Tool for Line Drawings
+  - 12 位艺术家画的 1,670 个阴影样本；论文称将公开，没有找到仓库
+- **CUFS** · 2009 · IEEE TPAMI 31(11) · [存档页](http://mmlab.ie.cuhk.edu.hk/archive/facesketch.html)
+  - CUHK Face Sketch Database (CUFS)
+  - 606 张人脸照片与画家素描配对，扫描栅格；主页现返回 HTTP 500，没写许可
+- **CUFSF** · 2011 · CVPR 2011 · [页面](http://mmlab.ie.cuhk.edu.hk/archive/cufsf/)
+  - CUHK Face Sketch FERET Database (CUFSF)
+  - 1,194 人的照片（来自 FERET）与画家素描，素描可下载，没写许可
+- **Strokes2Surface** · 2023 · Computer Graphics Forum 2024 · [arXiv 2306.07220](https://arxiv.org/abs/2306.07220) · [数据](https://gitlab.cg.tuwien.ac.at/srasoulzadeh/strokes2surface)
+  - Strokes2Surface
+  - 47 幅建筑草图 4,284 笔，其中 1,753 笔色调乱涂，落在 3D 画布上并带时间；没写许可
 
 ## 8. 现有综述
 

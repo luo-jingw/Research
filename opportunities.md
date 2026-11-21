@@ -572,3 +572,42 @@ Area: robot-painting-reproduction
 ## Promotion Condition
 
 OPT-014 或 OPT-015 的临摹任务可以在仿真中运行。
+
+# OPT-017
+
+Status: open
+
+Area: robot-painting-reproduction
+
+## Observation
+
+- 方向场方法里，排线方向来自主曲率（需三维）、轮廓或边缘切向、区域主轴、光照或固定角度；Kalogerakis12 发现没有一条局部几何规则能解释画家的全部笔触方向，先分区再选特征（`topics/robot-painting-reproduction/survey.md` §2.5）。
+- 教材的总原则是排线顺着形体走，交叉层角度在教材之间相互矛盾（Sullivan22、Guptill22、朱晓华-于才晟24，survey §2.5）。
+- 没有研究测过排线方向相对于先画轮廓线的分布。OpenSketch 有逐笔的 hatching 与轮廓标注、时序、配准 3D 模型，CC0；一次未切分折返笔画的粗测中，呈现稿 36.5% 的排线与最近轮廓切线的夹角在 15° 以内，中位 26.0°（survey §8.3）。
+
+## Opportunity
+
+在 OpenSketch 第一视角的呈现稿和概念稿上，把 hatching 笔画按折返点切成单条线，测：
+
+- 每条排线与最近轮廓线切线的夹角分布，按到轮廓的距离分组；
+- 与投影到画面的主曲率方向、区域主轴、等照度线方向的夹角分布；
+- 同一区域内相继排线组之间的夹角（交叉层角度）。
+
+结果作为仿真素描规划器的排线方向规则和交叉角度的依据。
+
+## Expected Mechanism
+
+假设：
+- 切分后的单条排线会更集中地平行于最近轮廓或区域主轴，离轮廓越远越接近区域主轴；
+- 同一区域相继两组排线的夹角集中在小于 90° 的范围，网格状的直角交叉少见。
+
+## Required Evidence
+
+- 切分前后的夹角分布对照，按设计师、物体和到轮廓距离分组；
+- 与三维主曲率方向的对照（投影后逐像素）；
+- 只依赖一位设计师的部分单独报告。
+
+## Promotion Condition
+
+VlaDrawingWriting 的排线方向规则需要人类数据依据，或有一篇面向排线方向统计的论文作为目标。
+
