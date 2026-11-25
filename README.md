@@ -14,6 +14,7 @@
 | [vla-drawing-writing](topics/vla-drawing-writing/README.md) | 第一轮综述 · 2026-11-18 | 用 VLA、world action model 或 LLM / VLM agent 控制机器人写字、画画，以仿真为主：仿真写画基准与笔迹实现、真机对照、世界模型预测写画画面、agent 写画 |
 | [vla-wam-robustness](topics/vla-wam-robustness/README.md) | 第一轮综述 · 2026-11-20 | VLA 与 world action model 对部署 setup 漂移（相机位姿、光照、纹理等）的鲁棒性：基准与分析、冻结或少参数的视觉域适应（FTM 谱系）、无标签测试时适应、条件注入结构与干预位置 |
 | [robot-painting-reproduction](topics/robot-painting-reproduction/README.md) | 第一轮综述，增补排线方向 · 2026-11-21 | 机器人临摹素描与油画：目标图像到笔画的分解、机器人素描与油画系统、铅笔炭笔与油画颜料的仿真与渲染、临摹的评测与数据；调色暂以直接指定画笔颜色代替 |
+| [brush-simulation](topics/brush-simulation/README.md) | 第一轮综述 · 2026-11-24 | 毛笔与笔刷的仿真与建模：图形学虚拟毛笔、墨与纸、机器人书法的毛笔模型、笔毫物理仿真、可微与学习式笔刷模型 |
 
 每个 topic 目录下：
 

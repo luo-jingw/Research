@@ -611,3 +611,149 @@ Area: robot-painting-reproduction
 
 VlaDrawingWriting 的排线方向规则需要人类数据依据，或有一篇面向排线方向统计的论文作为目标。
 
+
+# OPT-018
+
+Status: open
+
+Area: brush-simulation
+
+## Observation
+
+- 机器人一侧带倾角的毛笔模型都是静态按压的笔印：Lam09 在纸上标定倾角 5–50°、深度 1–15 mm；Wang-Min21 与 CCD-BSMG 只到 10°；没有带倾斜的运动笔画与真实墨迹的配对（`topics/brush-simulation/survey.md` §4.1）。
+- 两个按控制步更新的带状态模型（Robot Calligraphy POC、Karimov24 Brush 的 tractrix 追随）都假设笔杆竖直；有意倾斜的机器人几何只有 Gülzow24（笔毫绕笔管转动、笔尖落在圆弧上，15–45°）（survey §4.2）。
+- 图形学里 Chu-Tai VCB 用带临界倾角的纸孔阻力约束写出偏锋，Chu Thesis 指出倒锥笔印做不出偏锋（survey §2.2、§2.3）。
+- VlaDrawingWriting 的拖曳接触模型已经是 Karimov24 Brush 式的 tractrix 追随加倾斜的锚点，倾斜笔印的增益取自 Wang-Min21 的 0–10° 回归，倾斜笔法用到 20–30°（VlaDrawingWriting `docs/ur3_brush.md` → Leaned footprint、Tilt techniques）。
+
+## Opportunity
+
+用 10° 以上的公开证据检查倾斜笔杆下的拖曳接触模型：
+
+- Lam09 的趋势：倾斜时笔印变大、中心移向笔尖一侧，在 5–50° 上对照模型的笔印尺寸与中心偏移；
+- Gülzow24 的圆弧几何：由笔毫长度和倾角给出的笔尖超出量，对照模型在侧向倾斜下的笔尖位置；
+- CCD-BSMG 的闭式笔印（H、α、R、L）：0 / 5 / 10° 上对照笔印轮廓；
+- Chu-Tai VCB 的临界倾角：倾斜超过多少时笔尖贴纸走在笔画一侧。
+
+## Expected Mechanism
+
+假设：
+- 只靠 0–10° 的线性回归外推到 20–30° 会低估笔尖偏移和笔印不对称，Lam09 与 Gülzow24 的几何能给出更合适的形状；
+- 用这些几何约束倾斜笔印后，倾斜笔法在字形 IoU 上的像素损失会减少一部分，其余来自目标字形本身（字体轮廓不是毛笔写出的）。
+
+## Required Evidence
+
+- 模型在 0–50° 倾角、几档深度下的静态笔印尺寸、中心偏移、笔尖超出量，与 Lam09、Gülzow24、CCD-BSMG 的对应量对照；
+- 改动前后倾斜笔法在同一组字上的 IoU 与笔画级指标。
+
+## Promotion Condition
+
+VlaDrawingWriting 的毛笔计划需要 10° 以上倾角的笔印依据，或倾斜笔法的像素损失需要解释。
+
+# OPT-019
+
+Status: open
+
+Area: brush-simulation
+
+## Observation
+
+- 能稳定工作的毛笔模型都避开完整动力学：Chu-Tai VCB 每帧从上一帧出发用 SQP 求准静态平衡，纸面是硬约束；Baxter-Lin Brush 同类；DiVerdi Bristles 与 WetBrush 在笔管非惯性系中去掉或压低惯性（`topics/brush-simulation/survey.md` §2.3）。
+- 代价：Chu-Tai VCB 1–5 个笔束整个系统 62.6–28.5 fps（2004 年硬件）；Baxter-Lin Brush 一根 3 关节脊线约 100 µs；DiVerdi Bristles 50 根笔毫约 0.5 ms 一次印章；Baxter-Govindaraju Brush 一根脊线 10 µs 内（survey §2.3、§2.4）。
+- 通用杆与形变体的不稳定有文献解释：XPBD 不收敛时变软（Direct XPBD Rods），未解完的部分变成速度（Newton 文档），落笔的横向冲击限制时间步（Kaufman ANL），摩擦平面上的弹性杆本身多稳态（Frictional Elastica）（survey §5）。
+- VlaDrawingWriting 的引擎对比中，各引擎的链式与杆式物理笔束都在径向散开与折回之间随时间步、迭代、刚度和摩擦切换，落笔穿透纸面 0.52–7.2 mm，没有一个可作参照（VlaDrawingWriting `docs/engine_comparison.md` → Recommendation）。
+
+## Opportunity
+
+在机器人场景的 MuJoCo 进程之外做一个准静态脊线毛笔模块：
+
+- 几根脊线加侧向节点（Chu-Tai VCB）或 20–50 根去惯性的不可伸长笔毫（DiVerdi Bristles），表示在笔管坐标系中；
+- 每个墨子步求弯曲能加增量摩擦功的平衡，纸面不穿透是硬不等式约束，从上一子步热启动；
+- 塑性用静止角偏移或 Dahl 型迟滞，聚拢用最小密度约束；
+- 输出纸面以下的笔面投影作为笔印，接入现有的笔印渲染与纸面栅格；约束乘子给出笔对纸的力。
+
+## Expected Mechanism
+
+假设：
+- 热启动的准静态求解让散开还是折回由书写历史决定，不再随时间步和迭代次数变化；
+- 硬约束消除落笔穿透；
+- 偏锋、铺毫和塑性残余弯曲能由同一个模型给出，而拖曳接触模型要分别加规则。
+
+## Required Evidence
+
+- 同一段路径在不同子步长、迭代上限下的笔印与分支是否一致；
+- Romero Validation 式的悬臂与粘滑检查；
+- 笔印宽度随压缩距离的关系，对照 Paintbrush Scaling 的标度和 Karimov24 Brush 的 r(z)、b(z)；
+- 每个控制步（20 Hz、8 个墨子步）的 CPU 耗时；
+- 与拖曳接触模型在同一组字上的 IoU 与笔画级指标。
+
+## Promotion Condition
+
+拖曳接触模型表达不了目标需要的笔法（例如 10° 以上的偏锋、铺毫或塑性残余弯曲），或需要笔对纸的接触力。
+
+# OPT-020
+
+Status: open
+
+Area: brush-simulation
+
+## Observation
+
+- MuJoCo 3.17.0（2026-10-22）给 1D flex 加入无扭转的离散弹性杆弯曲，由 `discrete` 积分器隐式积分；4.0.0（2026-11-06）删除 cable 插件和 `composite`，由 1D flexcomp 取代并加入扭转（`topics/brush-simulation/survey.md` §5.4）。
+- 隐式积分的典型时间步是 1–4 ms；接触仍是软约束，`ipc` 无穿透模式只支持无摩擦的 2D flex（survey §5.4）。
+- VlaDrawingWriting 的引擎对比（2026-11-20，MuJoCo 3.17.0）测了球关节链、cable 插件和四面体 flex 笔束，没有测 1D flex 的离散弹性杆（VlaDrawingWriting `docs/engine_comparison.md` → Bristle models）。
+
+## Opportunity
+
+用 MuJoCo 4.0 的 1D flexcomp 离散弹性杆重建引擎对比中的 36 根笔毫笔束，在同一场景（深度 × 方向 × 转弯）下复测。
+
+## Expected Mechanism
+
+假设：
+- 隐式的离散弹性杆弯曲降低对时间步的敏感，散开与折回的切换减少；
+- 软接触下落笔穿透仍然存在；摩擦平面上的多稳态（Frictional Elastica）使分支切换不会完全消失。
+
+## Required Evidence
+
+- 与引擎对比相同的笔印指标、穿透深度、分支随时间步、迭代、刚度和摩擦的变化，以及吞吐量；
+- 与球关节链和拖曳接触模型的对照。
+
+## Promotion Condition
+
+VlaDrawingWriting 需要一个物理笔束作参照，或升级到 MuJoCo 4.x（cable 变体随之不可用）。
+
+# OPT-021
+
+Status: open
+
+Area: brush-simulation
+
+## Observation
+
+- 机器人上实测的墨量规律只有 Karimov24 Dry：笔画密度每笔按 α[i+1] = k·α[i] 衰减，k = 0.71–0.89；Jin23 Ink 用笔画面积与吸墨量之比控制枯笔（`topics/brush-simulation/survey.md` §4.3）。
+- RealBrush Ink 用"自上次蘸墨起的累计路径长度"一个标量表示墨量；FRIDA 认为笔上颜料量是最主要的未建模变量（survey §6.2、§6.3）。
+- 飞白在图形学中由墨量与压力决定：Chu-Tai VCB 的干笔图按湿度和压力取阈值，加纸纹遮罩；Hairy Brushes 逐根笔毫的墨量消耗产生条纹（survey §2.2、§2.3）。
+- 学习式模型中没有以干湿状态为条件的飞白（survey §6.3）。
+
+## Opportunity
+
+给仿真毛笔加一个随书写消耗的墨量状态，并由它产生墨色变淡和飞白：
+
+- 墨量按已沉积的墨迹面积递减，蘸墨时复位；
+- 笔印的墨浓度随墨量变化；
+- 飞白：笔印内按笔毫采样，覆盖率随墨量和压力下降，叠纸纹遮罩。
+
+## Expected Mechanism
+
+假设：
+- 按沉积面积递减的墨量能复现 Karimov24 Dry 的逐笔衰减形态；
+- 以墨量和压力为阈值的笔毫覆盖能在快速、轻按、墨少的笔段产生飞白，在慢速、重按处不产生。
+
+## Required Evidence
+
+- 连续多笔的墨浓度衰减曲线，与 Karimov24 Dry 的 k 对照；
+- 飞白出现的位置随速度、深度和墨量的变化；
+- 加入墨量后蘸墨的规划次数与字形指标。
+
+## Promotion Condition
+
+目标字迹包含飞白或枯笔，或需要规划蘸墨时机。

@@ -411,3 +411,50 @@ Area: robot-painting-reproduction
   - Guptill76 只读到网上的用户上传本，目录中不给链接；Betty Edwards、Bert Dodson 的教材没有找到合法副本，没有引用。
   - 交叉层角度：Sullivan22 主张直角最中性，朱晓华-于才晟24 示范逐层"稍微变换点角度"，Guptill22 建议铅笔画少用交叉；综述只陈述各自原文。
   - OpenSketch 的方向粗测没有按折返点切分笔画，不能作为人类排线规律的结论。
+
+# ISSUE-009
+
+Status: open
+
+Area: brush-simulation
+
+## Observation
+
+第一轮 brush-simulation 综述（`topics/brush-simulation/papers.md`、`survey.md`）中：一部分条目只读到摘要、TLDR 或他人转述，几项元数据和数据是否公开没有在一手页面确认，几项"没有找到"的结论依赖检索召回。
+
+## Impact
+
+引用标 † 的条目、下列只来自摘要或转述的方法细节，或"没有与真实笔迹定量对照的物理毛笔""没有带倾角的公开配对数据"这类结论之前，需要回到一手来源确认。
+
+## Evidence
+
+- **方法细节只来自摘要、TLDR 或转述**：
+  - 机器人毛笔模型：Kwok06、Fan18、Li19、CCD-BSM、Yan23、B-BSMG、Guo26、Mueller13、Sun14、Kob22、Sch25、HGN Virtual（Springer、IEEE、Elsevier 全文被拦截）；
+  - Chao 等人的 GAN Calligraphy、Gao 2019 CAE-DE、Wu 2020 AC-GAN：训练时的毛笔渲染方式在摘要中看不到；
+  - 图形学：Virtual Brush、Lee Black-Ink、Lee Ink Diffusion、Saito-Nakajima Brush、Girshick Hairy Brush、Xu Hairy Brush、Bai Brush、Droplet 的内容来自 Chu Thesis 或 Huang 2019 FITEE 的转述；Huang-Hou Brush 只见 OpenAlex 记录；
+  - 学习式：StrokeNet、NBE 只读到 OpenReview 或 Crossref 摘要；
+  - 物理：Ratchet Hairs 摘要不可得，内容来自 Wet Hair 的引用；Bico Coalescence 只读了标题和他人引用。
+- **元数据不全或未确认**：
+  - Lam11：发表处只见于 Robotica 42:931 的参考文献，没有找到 DOI；
+  - Lie-group XPBD（arXiv 2608.23606）、Paintbrush Scaling（arXiv 2609.39410）：arXiv 页面没有发表处；
+  - CCD-BSM 的代码仓库按名称匹配，论文中没有链接。
+- **身份未确认**：
+  - Sim-to-Real Brush 与 ICRA 2024 的 "Sim-to-Real Robotic Sketching using Behavior Cloning and Reinforcement Learning"（DOI 10.1109/ICRA57147.2024.10610286）可能是同一工作，标题不同；
+  - arXiv 2312.09673 与 RoDAL（Applied Intelligence 2024）是否同一工作未核实，两者都已排除。
+- **数据与代码可得性**：
+  - RealBrush Ink 称希望发布 1,818 条墨笔画，本轮没有找到发布页；
+  - CCD-BSMG 的完整真实数据需签协议获取，公开的只有 10 张样例照片；
+  - StrokeDiff 称在建 1,008 条墨笔画数据集；OnOff 的代码仓库截至 2026-11 只有写着 "Coming Soon" 的 README；
+  - MoXi 的第三方移植（unity-moxi-ink、moxi-ink、ink-canvas）的忠实度没有检查。
+- **未能核实、没有列入目录**：
+  - "Chinese Hairy Brush: A physically-based model for calligraphy"（Chinese Journal of Electronics 2009）：没有 DOI；
+  - Huang, Way, Shih, "Physical-based model of ink diffusion in Chinese ink paintings"（WSCG 2003）：只有索引记录；
+  - Adams 等 2004 "Interactive 3D painting on point-sampled objects"、Mi 等 2003 "An experience based virtual brush model"（计算机研究与发展）、Shi 与 Zhou 的 "Real-time dynamic and pressure-sensitive brush rendering"：没有核实到一手记录；
+  - Lam09 正文没有给出拟合系数，CCD23 的闭式模型系数本轮只由子方向检索转述，没有逐项抽查。
+- **抽查结果**：IMPASTO 的 ICRA 2026 发表处（Crossref，第 12915–12922 页）、OnOff 的 ECCV 2026 录用（arXiv comment）、RealBrush Ink 的 1,818 条与 LPIPS 0.2593（原文）、MuJoCo 3.17.0 的 1D flex DER 与 4.0.0 删除 cable 插件（更新日志）、MoXi 表 1 的帧率与 Chu Thesis 表 2.1 的帧率（原文）均与转述一致。MoXi 的 44 fps 对应每 300 帧更新一次输出图，每帧都更新时为 32 fps，综述按原文写出两者。
+- **与其他方向的发表处更正**：IMPASTO 已发表于 ICRA 2026，已同步改正 `topics/vla-drawing-writing/papers.md` 与 `topics/robot-painting-reproduction/papers.md` 中原先的"预印本"。
+- **召回缺口**：
+  - 用杆、FEM 或 MPM 模拟毛笔并与真实笔迹定量对照的论文：本轮没有找到；Bai Brush、Huang-Hou Brush 和上面未核实的几篇是否做过对照不清楚；
+  - 带倾角的运动笔画与真实墨迹的公开配对数据：本轮没有找到；
+  - 书写过程中估计笔尖状态的机器人书法论文：一次检索没有找到；
+  - OpenAlex 与 Semantic Scholar 在检索中途限流，ACM DL、IEEE Xplore、Springer 拒绝自动访问，召回可能不全。

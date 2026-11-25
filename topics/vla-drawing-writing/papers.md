@@ -175,7 +175,7 @@
 - **CalliRewrite** · 2024 · ICRA 2024 · [arXiv 2405.15776](https://arxiv.org/abs/2405.15776)
   - CalliRewrite: Recovering Handwriting Behaviors from Calligraphy Images without Supervision
   - 无监督地从书法图像恢复笔顺，再用 RL 微调工具控制
-- **IMPASTO** · 2026 · 预印本 · [arXiv 2603.29315](https://arxiv.org/abs/2603.29315)
+- **IMPASTO** · 2026 · ICRA 2026 · [arXiv 2603.29315](https://arxiv.org/abs/2603.29315) · [DOI](https://doi.org/10.1109/ICRA57385.2026.11696393)
   - IMPASTO: Integrating Model-Based Planning with Learned Dynamics Models for Robotic Oil Painting Reproduction
   - 油画缺少可信仿真器，改为学习像素动力学模型 + MPC
 

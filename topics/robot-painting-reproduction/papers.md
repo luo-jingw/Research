@@ -338,7 +338,7 @@
 - **Spline-FRIDA** · 2024 · IEEE RA-L 2025 · [arXiv 2412.00597](https://arxiv.org/abs/2412.00597) · [DOI](https://doi.org/10.1109/LRA.2025.3563131)
   - Spline-FRIDA: Towards Diverse, Humanlike Robot Painting Styles with a Sample-Efficient, Differentiable Brush Stroke Model
   - 动作捕捉的人类笔迹训练轨迹 VAE；Traj2Stroke 让粗细随笔高线性变化，每种画具约 1 小时采数据、20 分钟训练
-- **IMPASTO** · 2026 · 预印本 · [arXiv 2603.29315](https://arxiv.org/abs/2603.29315) · [项目](https://impasto-robopainting.github.io)
+- **IMPASTO** · 2026 · ICRA 2026 · [arXiv 2603.29315](https://arxiv.org/abs/2603.29315) · [DOI](https://doi.org/10.1109/ICRA57385.2026.11696393) · [项目](https://impasto-robopainting.github.io)
   - IMPASTO: Integrating Model-Based Planning with Learned Dynamics Models for Robotic Oil Painting Reproduction
   - 机器人自对弈学习像素动力学模型 + 滚动时域 MPC 规划轨迹和力；调色盘 24 格预混油彩、按目标画取子集，模型内颜色按灰度处理
 - **Cable Mural Robot** · 2024 · 预印本 · [arXiv 2403.12214](https://arxiv.org/abs/2403.12214)
